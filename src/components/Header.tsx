@@ -3,8 +3,8 @@ import styled from "styled-components";
 import { brandColors, neutralColors, H5 } from "@giveth/ui-design-system";
 
 
-export function Header(){
-  return(
+export function Header() {
+  return (
     <Container>
       <Logo>
         <Image
@@ -22,7 +22,7 @@ export function Header(){
 }
 
 
-const Container=styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
   background-color:${brandColors.giv[700]};

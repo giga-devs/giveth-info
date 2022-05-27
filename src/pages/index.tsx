@@ -11,8 +11,8 @@ export default function Home() {
         <title>Giveth Info</title>
       </Head>
       <Body>
-        <Header/>
-        <Footer/>
+        <Header />
+        <Footer />
       </Body>
     </>
   )

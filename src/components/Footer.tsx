@@ -1,9 +1,9 @@
-import { P,brandColors } from "@giveth/ui-design-system";
+import { P, brandColors } from "@giveth/ui-design-system";
 import styled from "styled-components";
 
-export function Footer(){
+export function Footer() {
   const currentYear = new Date().getFullYear()
-  return(
+  return (
     <Container>
       <li>
         <PStyled>Made with 💜 by the Giveth Community</PStyled>
