@@ -10,15 +10,15 @@ export default function Home() {
       <Head>
         <title>Giveth Info</title>
       </Head>
-      <Body>
+      <Container>
         <Header />
         <Footer />
-      </Body>
+      </Container>
     </>
   )
 }
 
-const Body = styled.body`
+const Container = styled.div`
   display:flex;
   flex-direction: column;
   height: 100vh;
