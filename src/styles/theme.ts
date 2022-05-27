@@ -5,7 +5,7 @@ import {
 const theme = {
   colors: {
     background: brandColors.giv[900],
-    text: '#ffffff',
+    text: '#fff',
     primary: brandColors.giv[700]
   }
 }
