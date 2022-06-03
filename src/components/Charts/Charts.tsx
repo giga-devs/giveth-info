@@ -1,4 +1,6 @@
 import styled from "styled-components"
+import  { mediaQueries } from "../../utils/size"
+
 import { DonationChart } from "./DonationChart"
 import { ProjectChart } from "./ProjectChart"
 
@@ -13,7 +15,15 @@ export function Charts(){
 
 const ChartsContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(670px, auto));
-  gap: 50px;
+  width: 100%;
   justify-content: space-between;
+  gap: 50px;
+
+	${mediaQueries.mobileS} {
+		grid-template-columns: repeat(1, 1fr);
+	}
+
+	${mediaQueries.laptopL} {
+		grid-template-columns: repeat(2, 1fr);
+	}
 `

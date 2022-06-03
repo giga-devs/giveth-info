@@ -1,5 +1,7 @@
 import styled from "styled-components"
 import { H4 } from "@giveth/ui-design-system" 
+import  { mediaQueries } from "../../utils/size"
+
 import { TopDonors } from "./TopDonors"
 import { TopProjects } from "./TopProjects"
 
@@ -17,7 +19,15 @@ export function LeaderBoard(){
 
 const BoardsContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(670px, auto));
-  gap: 50px;
+  width: 100%;
   justify-content: space-between;
+  gap: 50px;
+
+	${mediaQueries.mobileS} {
+		grid-template-columns: repeat(1, 1fr);
+	}
+
+	${mediaQueries.laptopL} {
+		grid-template-columns: repeat(2, 1fr);
+	}
 `

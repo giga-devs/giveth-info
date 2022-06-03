@@ -27,7 +27,7 @@ export function KPI(props: KPIType){
 const KPICard = styled.div`
   background-color:${brandColors.giv[700]};
   height: 100px;
-  width: 240px;
+  width: 100%;
   border-radius: 8px;
 `
 

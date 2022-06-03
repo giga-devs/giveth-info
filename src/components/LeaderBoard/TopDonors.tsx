@@ -84,7 +84,7 @@ const TableHeader = styled(P)`
 `
 
 const Table = styled.table`
-  width: 670px;
+  width: 100%;
 `
 
 const TableData = styled(P)`

@@ -29,7 +29,7 @@ const Title = styled(H4)`
 
 const ChartContainer = styled.div`
   height: 300px;
-  width: 670px;
+  width: 100%;
   background-color: ${brandColors.giv[700]};
   border-radius: 8px;
 `

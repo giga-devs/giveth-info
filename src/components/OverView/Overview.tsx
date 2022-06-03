@@ -3,6 +3,7 @@ import { KPI } from "./KPI"
 
 import styled from "styled-components"
 import { H4 } from "@giveth/ui-design-system" 
+import  { mediaQueries } from "../../utils/size"
 
 export function OverView(){
   const [totalDonated, setTotalDonated] = useState(0)
@@ -45,8 +46,18 @@ const KPIContainer = styled.div`
   display: grid;
   width: 100%;
   justify-content: space-between;
-  grid-template-columns: repeat(auto-fit, minmax(240px, auto));
   gap: 50px;
+
+	${mediaQueries.mobileS} {
+		grid-template-columns: repeat(1, 1fr);
+	}
+
+	${mediaQueries.laptop} {
+		grid-template-columns: repeat(2, 1fr);
+	}
+	${mediaQueries.laptopL} {
+		grid-template-columns: repeat(4, 1fr);
+	}
 `
 
 const Title = styled(H4)`
