@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@giveth/ui-design-system": "1.3.2",
+    "lightweight-charts": "^3.8.0",
+    "miragejs": "^0.1.45",
     "next": "12.1.5",
     "react": "18.0.0",
     "react-dom": "18.0.0",
