@@ -1,5 +1,6 @@
 import { brandColors, P } from "@giveth/ui-design-system";
 import styled from "styled-components";
+import { formatDollarAmount } from '../../utils/numbers'
 
 
 interface KPIType{
@@ -9,14 +10,13 @@ interface KPIType{
 }
 
 export function KPI(props: KPIType){
-  const StringfiedNumber = props.value.toString().replace(/\d(?=(?:\d{3})+$)/g, '$&.')
-  
+
   return(
     <KPICard>
       <Content>
         <Title>{props.title}</Title>
         <Value>
-          <Number>{StringfiedNumber}</Number>
+          <Number>{formatDollarAmount(props.value, 2, true)}</Number>
           {props.currency && <Currency>USD</Currency >}
         </Value>
       </Content>

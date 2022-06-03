@@ -1,6 +1,8 @@
+import { useEffect, useState } from "react";
+
 import styled from "styled-components"
 import { brandColors, H5, P } from "@giveth/ui-design-system";
-import { useEffect, useState } from "react";
+import { formatDollarAmount } from '../../utils/numbers'
 
 
 export function TopDonors(){
@@ -60,7 +62,7 @@ export function TopDonors(){
                 </td>
                 <td>
                   <TableData>
-                    {topDonor.value}
+                    {formatDollarAmount(topDonor.value, 2, true)} 
                   </TableData>
                 </td>
               </tr>

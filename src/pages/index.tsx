@@ -50,7 +50,7 @@ createServer({
             'id': 1,
             'adress': '0xdrwea333d7fe1411414214',
             'quantity': 43,
-            'value': 3200
+            'value': 3200000
           },
           {
             'id': 2,

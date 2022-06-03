@@ -17,7 +17,7 @@ export function ProjectChart(){
     <div>
       <Title weight={700}>Projects</Title>
       <ChartContainer>
-        <KPI title='Total Donated'value={projectsCreated} currency={true}/>
+        <KPI title='Projects Created'value={projectsCreated} currency={false}/>
       </ChartContainer>
     </div>
   )
