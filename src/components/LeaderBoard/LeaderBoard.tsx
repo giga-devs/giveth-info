@@ -11,7 +11,7 @@ export function LeaderBoard(){
       <H4 weight={700}>Leaderboards</H4>
       <BoardsContainer>
         <TopDonors />
-        <TopProjects />
+        <TopProjects itemsPerPage={4}/>
       </BoardsContainer>
     </div>
   )

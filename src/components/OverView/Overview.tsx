@@ -3,7 +3,7 @@ import { KPI } from "./KPI"
 
 import styled from "styled-components"
 import { H4 } from "@giveth/ui-design-system" 
-import  { mediaQueries } from "../../utils/size"
+import { mediaQueries } from "../../utils/size"
 
 export function OverView(){
   const [totalDonated, setTotalDonated] = useState(0)

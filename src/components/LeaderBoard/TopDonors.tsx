@@ -38,7 +38,7 @@ export function TopDonors(){
         <tbody>
           {topDonors.map((topDonor)=>{
             return (
-              <tr>            
+              <tr key={topDonor.id}>            
                 <td>
                   <TableData>
                     {topDonor.id}
