@@ -4,10 +4,11 @@ import styled from 'styled-components';
 import { Footer } from '../components/Footer';
 import { Header } from '../components/Header';
 import { OverView } from '../components/OverView/Overview';
-
-import { createServer } from 'miragejs'
 import { Charts } from '../components/Charts/Charts';
 import { LeaderBoard } from '../components/LeaderBoard/LeaderBoard';
+import  { mediaQueries } from "../utils/size"
+
+import { createServer } from 'miragejs'
 
 createServer({
   routes(){
@@ -48,7 +49,7 @@ createServer({
       return [
           {
             'id': 1,
-            'adress': '0xdrwea333d7fe1411414214',
+            'adress': '0xd41a333d7fe141',
             'quantity': 43,
             'value': 3200000
           },
@@ -66,6 +67,24 @@ createServer({
           },
           {
             'id': 4,
+            'adress': '02x41a243d7fe1411414214',
+            'quantity': 23,
+            'value': 1900
+          },
+          {
+            'id': 5,
+            'adress': '02x41a243d7fe1411414214',
+            'quantity': 23,
+            'value': 1900
+          },
+          {
+            'id': 6,
+            'adress': '02x41a243d7fe1411414214',
+            'quantity': 23,
+            'value': 1900
+          },
+          {
+            'id': 7,
             'adress': '02x41a243d7fe1411414214',
             'quantity': 23,
             'value': 1900
@@ -110,7 +129,181 @@ createServer({
               'name': 'Project 6',
               'donors': 12,
               'raised': 1198
-            }
+            },
+            {
+              'id': 17,
+              'name': 'Project 6',
+              'donors': 12,
+              'raised': 1198
+            },
+            {
+              'id': 18,
+              'name': 'Project 1',
+              'donors': 43,
+              'raised': 3200
+            },
+            {
+              'id': 19,
+              'name': 'Project 2',
+              'donors': 12,
+              'raised': 3042
+            },
+            {
+              'id': 20,
+              'name': 'Project 3',
+              'donors': 30,
+              'raised': 2395
+            },
+            {
+              'id': 21,
+              'name': 'Project 4',
+              'donors': 15,
+              'raised': 1598
+            },
+            {
+              'id': 22,
+              'name': 'Project 5',
+              'donors': 15,
+              'raised': 1298
+            },
+            {
+              'id': 23,
+              'name': 'Project 6',
+              'donors': 12,
+              'raised': 1198
+            },
+            {
+              'id': 24,
+              'name': 'Project 6',
+              'donors': 12,
+              'raised': 1198
+            },
+            {
+              'id': 25,
+              'name': 'Project 1',
+              'donors': 43,
+              'raised': 3200
+            },
+            {
+              'id': 26,
+              'name': 'Project 2',
+              'donors': 12,
+              'raised': 3042
+            },
+            {
+              'id': 27,
+              'name': 'Project 3',
+              'donors': 30,
+              'raised': 2395
+            },
+            {
+              'id': 28,
+              'name': 'Project 4',
+              'donors': 15,
+              'raised': 1598
+            },
+            {
+              'id': 29,
+              'name': 'Project 5',
+              'donors': 15,
+              'raised': 1298
+            },
+            {
+              'id': 30,
+              'name': 'Project 6',
+              'donors': 12,
+              'raised': 1198
+            },
+            {
+              'id': 31,
+              'name': 'Project 6',
+              'donors': 12,
+              'raised': 1198
+            },
+            {
+              'id': 32,
+              'name': 'Project 1',
+              'donors': 43,
+              'raised': 3200
+            },
+            {
+              'id': 33,
+              'name': 'Project 2',
+              'donors': 12,
+              'raised': 3042
+            },
+            {
+              'id': 34,
+              'name': 'Project 3',
+              'donors': 30,
+              'raised': 2395
+            },
+            {
+              'id': 35,
+              'name': 'Project 4',
+              'donors': 15,
+              'raised': 1598
+            },
+            {
+              'id': 36,
+              'name': 'Project 5',
+              'donors': 15,
+              'raised': 1298
+            },
+            {
+              'id': 37,
+              'name': 'Project 6',
+              'donors': 12,
+              'raised': 1198
+            },
+            {
+              'id': 38,
+              'name': 'Project 6',
+              'donors': 12,
+              'raised': 1198
+            },
+            {
+              'id': 39,
+              'name': 'Project 1',
+              'donors': 43,
+              'raised': 3200
+            },
+            {
+              'id': 40,
+              'name': 'Project 2',
+              'donors': 12,
+              'raised': 3042
+            },
+            {
+              'id': 41,
+              'name': 'Project 3',
+              'donors': 30,
+              'raised': 2395
+            },
+            {
+              'id': 42,
+              'name': 'Project 4',
+              'donors': 15,
+              'raised': 1598
+            },
+            {
+              'id': 43,
+              'name': 'Project 5',
+              'donors': 15,
+              'raised': 1298
+            },
+            {
+              'id': 44,
+              'name': 'Project 6',
+              'donors': 12,
+              'raised': 1198
+            },
+            {
+              'id': 45,
+              'name': 'Project 6',
+              'donors': 12,
+              'raised': 1198
+            },
           ]
         })
 
@@ -150,4 +343,18 @@ const Content = styled.div`
   row-gap: 30px;
   margin-top: 32px;
   margin-bottom: 72px;
+
+  
+  ${mediaQueries.mobileL} {
+    margin: 0 40px;
+  }
+
+  ${mediaQueries.tablet} {
+    margin: 0 80px;
+  }
+  
+  ${mediaQueries.desktop} {
+    margin: 0 160px;
+	}
+
 `
