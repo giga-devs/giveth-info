@@ -2,7 +2,8 @@ import { useState, useEffect } from "react"
 import { KPI } from "../OverView/KPI"
 
 import styled from "styled-components"
-import { H4, brandColors } from "@giveth/ui-design-system" 
+import { H4, brandColors } from "@giveth/ui-design-system"
+import Chart from './Foo';
 
 export function DonationChart(){
   const [totalDonated, setTotalDonated] = useState(0)
@@ -18,6 +19,7 @@ export function DonationChart(){
       <Title weight={700}>Donations</Title>
       <ChartContainer>
         <KPI title='Total Donated'value={totalDonated} currency={true}/>
+        <Chart data={[{step: 1, value: 2}, {step: 2, value: 4}]}/>
       </ChartContainer>
     </div>
   )
