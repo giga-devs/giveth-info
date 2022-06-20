@@ -337,12 +337,12 @@ const Container = styled.div`
 `
 
 const Content = styled.div`
-  height: 100%;
-  display: grid;
+  display: flex;
+  flex-direction: column;
   margin: 0 160px;
   row-gap: 30px;
-  margin-top: 32px;
-  margin-bottom: 72px;
+  padding-top: 32px;
+  padding-bottom: 72px;
 
   
   ${mediaQueries.mobileL} {
