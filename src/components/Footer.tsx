@@ -19,7 +19,7 @@ const Container = styled.ul`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 44px 0;
+  margin-bottom: 44px;
 
   li {
     list-style: none;
