@@ -1,42 +1,41 @@
 import { useEffect, useState } from "react"
-import { KPI } from "./KPI"
+import { KPI, KPIType } from "./KPI"
 
 import styled from "styled-components"
 import { H4 } from "@giveth/ui-design-system" 
 import { mediaQueries } from "../../utils/size"
 
 export function OverView(){
-  const [totalDonated, setTotalDonated] = useState(0)
-  const [donorsRegistered, setDonorsRegistered] = useState(0)
-  const [projectsCreated, setProjectsCreated] = useState(0)
-  const [topDonation, setTopDonation] = useState(0)
-
-  useEffect(() => {
-    fetch('http://localhost:3000/api/total-donated')
-      .then(response => response.json())
-      .then(data => setTotalDonated(data.value))
-
-    fetch('http://localhost:3000/api/donors')
-    .then(response => response.json())
-    .then(data => setDonorsRegistered(data.value))
-
-    fetch('http://localhost:3000/api/projects')
-    .then(response => response.json())
-    .then(data => setProjectsCreated(data.value))
-
-    fetch('http://localhost:3000/api/top-donation')
-    .then(response => response.json())
-    .then(data => setTopDonation(data.value))
-  },[])
-
+  const KPIS:Array<KPIType> = [
+    {
+      title: 'Total Donated',
+      endpoint: 'total-donated',
+      currency: true
+    },
+    {
+      title: 'Donors Registered',
+      endpoint: 'donors',
+      currency: false
+    },
+    {
+      title: 'Projects Created',
+      endpoint: 'projects',
+      currency: false
+    },
+    {
+      title: 'Top Donation',
+      endpoint: 'top-donation',
+      currency: true
+    },
+  ]
+  
   return(
     <div>
       <Title weight={700}>Overview</Title>
       <KPIContainer>
-        <KPI title='Total Donated'value={totalDonated} currency={true}/>
-        <KPI title='Donors Registered' value={donorsRegistered} currency={false}/>
-        <KPI title='Projects Created' value={projectsCreated} currency={false}/>
-        <KPI title='Top Donation' value={topDonation} currency={true}/>
+        {KPIS.map((kpi)=>{
+          return <KPI key={kpi.endpoint} title={kpi.title} currency={kpi.currency} endpoint={kpi.endpoint}/>
+        })}
       </KPIContainer>
     </div>
   )

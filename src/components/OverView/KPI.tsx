@@ -1,30 +1,57 @@
 import { brandColors, P } from "@giveth/ui-design-system";
 import styled from "styled-components";
 import { formatDollarAmount } from '../../utils/numbers'
+import { useEffect, useState } from "react"
+import api from "../../api/instance"
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
-interface KPIType{
+export interface KPIType{
   title: string
-  value: number
   currency: boolean
+  endpoint: string
 }
 
 export function KPI(props: KPIType){
+  const [value, setValue] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isError, setIsError] = useState(false)
+
+  useEffect(() => {
+    api.get(props.endpoint)
+    .then(function (response) {
+      setIsLoading(false)
+      setValue(response.data.value)
+    })
+    .catch(function (error) {
+      setIsLoading(false)
+      setIsError(true)
+    })
+  },[])
 
   return(
     <KPICard>
       <Content>
         <Title>{props.title}</Title>
-        {props.currency ? (
+        {isLoading && 
+          <Skeleton height={42} highlightColor={brandColors.giv[600]} baseColor={brandColors.giv[700]}/>
+        }
+        {isError &&
           <Value>
-            <Number>{formatDollarAmount(props.value, 2, true)}</Number>
-            
+            <Number>-</Number>
           </Value>
-            ) : 
+        }
+        {!isLoading && !isError && props.currency &&
           <Value>
-            <Number>{props.value}</Number>
+            <Number>{formatDollarAmount(value, 2, true)}</Number>
           </Value>
-          }
+        }
+        {!isLoading && !isError && !props.currency &&
+          <Value>
+            <Number>{value}</Number>
+          </Value>
+        }
       </Content>
     </KPICard>
   )
@@ -59,11 +86,3 @@ const Number = styled(P)`
   font-size: 32px;
   line-height: 42px;
 `
-  
-const Currency = styled(P)`
-  font-weight: 400;
-  font-size: 20px;
-  color: ${brandColors.deep[100]};
-  margin-left: 8px;
-` 
-

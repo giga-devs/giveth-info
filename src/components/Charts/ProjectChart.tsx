@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from "react"
+import { Bar } from 'react-chartjs-2';
+import styled from "styled-components"
+import { H4, brandColors, P } from "@giveth/ui-design-system"
+import api from "../../api/instance"
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,12 +14,6 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
-import styled from "styled-components"
-import { H4, brandColors } from "@giveth/ui-design-system"
-
-import { KPI } from "../OverView/KPI"
-
 
 ChartJS.register(
   CategoryScale,
@@ -28,6 +28,8 @@ ChartJS.register(
 export function ProjectChart(){
   const [projectsCreated, setProjectsCreated] = useState(0)
   const [currentprojectsCreated, setCurrentProjectsCreated] = useState(0)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isError, setIsError] = useState(false)
   
   const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
   
@@ -82,24 +84,59 @@ export function ProjectChart(){
   };
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/projects')
-      .then(response => response.json())
-      .then(data => {
-        setProjectsCreated(data.value)
-        setCurrentProjectsCreated(data.value)
-      })
+    api.get('/projects')
+    .then(function (response) {
+      setIsLoading(false)
+      setProjectsCreated(response.data.value)
+      setCurrentProjectsCreated(response.data.value)
+    })
+    .catch(function (error) {
+      setIsLoading(false)
+      setIsError(true)
+    })
   },[])
 
-    return(
-      <div>
-        <TitleH1 weight={700}>Projects</TitleH1>
-        <ChartContainer>
-          <KPI title='Projects Created'value={currentprojectsCreated} currency={false}/>
-          <Bar options={options} data={data} />
-        </ChartContainer>
-      </div>
-    )
-  }
+  return(
+    <div>
+      <TitleH1 weight={700}>Projects</TitleH1>
+      <ChartContainer>
+        {isLoading && 
+          <Skeleton height={300} highlightColor={brandColors.giv[600]} baseColor={brandColors.giv[700]}/>
+        }
+        {isError &&
+              <ErrorContainer>
+                <ErrorMessage>
+                  Data is currently not available
+                </ErrorMessage>
+              </ErrorContainer>
+        }
+        {!isLoading && !isError && 
+          <>
+              <KPICard>
+                <Content>
+                  <TitleKPI>Projects Created</TitleKPI>
+                  {isLoading && 
+                    <Skeleton height={42} highlightColor={brandColors.giv[600]} baseColor={brandColors.giv[700]}/>
+                  }
+                  {isError &&
+                    <Value>
+                      <Number>-</Number>
+                    </Value>
+                  }
+                  {!isLoading && !isError  &&
+                    <Value>
+                      <Number>{currentprojectsCreated}</Number>
+                    </Value>
+                  }
+                </Content>
+              </KPICard>
+            <Bar options={options} data={data} />
+          </>
+        }
+      </ChartContainer>
+    </div>
+  )
+}
   
 const TitleH1 = styled(H4)`
   margin-bottom: 30px;
@@ -112,4 +149,48 @@ const ChartContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+`
+const ErrorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 285px;
+`
+
+const ErrorMessage = styled(P)`
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 21px;
+  color: ${brandColors.deep[100]};
+  text-align: center;
+`
+
+const KPICard = styled.div`
+background-color:${brandColors.giv[700]};
+height: 100px;
+width: 100%;
+border-radius: 8px;
+`
+
+const Content = styled.div`
+padding: 18px 24px;
+`
+
+const Value = styled.div`
+display: flex;
+flex-direction: row;
+align-items: center;
+`
+
+const TitleKPI = styled(P)`
+font-weight: 400;
+font-size: 14px;
+line-height: 21px;
+color: ${brandColors.deep[100]}
+`
+
+const Number = styled(P)`
+font-weight: 700;
+font-size: 32px;
+line-height: 42px;
 `
