@@ -15,10 +15,16 @@ export function KPI(props: KPIType){
     <KPICard>
       <Content>
         <Title>{props.title}</Title>
-        <Value>
-          <Number>{formatDollarAmount(props.value, 2, true)}</Number>
-          {props.currency && <Currency>USD</Currency >}
-        </Value>
+        {props.currency ? (
+          <Value>
+            <Number>{formatDollarAmount(props.value, 2, true)}</Number>
+            
+          </Value>
+            ) : 
+          <Value>
+            <Number>{props.value}</Number>
+          </Value>
+          }
       </Content>
     </KPICard>
   )

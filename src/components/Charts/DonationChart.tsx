@@ -95,7 +95,7 @@ export function DonationChart(){
       <div>
         <TitleH1 weight={700}>Donations</TitleH1>
         <ChartContainer>
-          <KPI title='Total Donated'value={currentTotalDonated} currency={false}/>
+          <KPI title='Total Donated'value={currentTotalDonated} currency={true}/>
           <Bar options={options} data={data} />
         </ChartContainer>
       </div>
