@@ -5,7 +5,7 @@ import ReactPaginate from 'react-paginate';
 import { formatDollarAmount } from '../../utils/numbers'
 import  { mediaQueries } from "../../utils/size"
 import { useEffect, useState } from "react";
-import { donorsProps, projectsProps } from "./LeaderBoard";
+import api from "../../api/instance"
 
 export enum DataType {
   DONOR ='DONOR',
@@ -14,17 +14,31 @@ export enum DataType {
 
 interface TableProps{
   title: string,
-  data: Array<donorsProps> | Array<projectsProps>,
   headerItems: Array<string>,
   dataType: DataType,
   itemsPerPage: number,
+  endpoint: string
 }
 
-export function Table ({ title, data, headerItems, itemsPerPage, dataType } : TableProps){
-
+export function Table ({ title, headerItems, itemsPerPage, dataType, endpoint } : TableProps){
+  const [data, setData] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isError, setIsError] = useState(false)
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
+
+  useEffect(() => {
+    api.get('endpoint')
+    .then(function (response) {
+      setIsLoading(false)
+      setData(response.data)
+    })
+    .catch(function (error) {
+      setIsLoading(false)
+      setIsError(true)
+    })
+  }, []);
 
   useEffect(() => {
     if(!data) return
@@ -54,7 +68,7 @@ export function Table ({ title, data, headerItems, itemsPerPage, dataType } : Ta
         </Data>
         <HR />
         <Rows>
-          {currentItems && dataType === DataType.DONOR ? currentItems.map((item)=>{
+          {!isError && !isLoading && currentItems && dataType === DataType.DONOR && currentItems.map((item)=>{
             return (
             <Data key={item.id}>            
                 <TableData>
@@ -76,9 +90,9 @@ export function Table ({ title, data, headerItems, itemsPerPage, dataType } : Ta
                   {formatDollarAmount(item.value, 2, true)} 
                 </TableData>
             </Data>
-          )}) :
+          )})} 
           
-          currentItems && dataType === DataType.PROJECT ? currentItems.map((item)=>{
+          {!isError && !isLoading && currentItems && dataType === DataType.PROJECT && currentItems.map((item)=>{
             return (
               <Data key={item.id}>            
               <TableData>
@@ -100,9 +114,8 @@ export function Table ({ title, data, headerItems, itemsPerPage, dataType } : Ta
                 {formatDollarAmount(item.raised, 2, true)} 
               </TableData>
           </Data>
-          )}) : 
-          
-          <h1>loading</h1>}
+          )})}
+          {isError && <h1>error</h1>}
         </Rows>
         <HR />
         <Pagination>
