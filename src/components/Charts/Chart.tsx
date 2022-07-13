@@ -39,9 +39,18 @@ interface ChartProps{
   
 export function Chart(props:ChartProps){
   const [value, setValue] = useState(0)
-  const [data, setData] = useState({})
+  const [data, setData] = useState({
+    labels: ['a','b'],
+    datasets: [
+      {
+        data: [1,2],
+        backgroundColor: '#5D5FEF',
+        borderRadius: 8,
+      },
+    ],
+  })
   const [chartsData, setChartsData] = useState([])
-  const [labels, setLabels] = useState([])
+  const [chartLabels, setChartLabels] = useState([])
   const [currentValue, setCurrentValue] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
@@ -85,14 +94,13 @@ export function Chart(props:ChartProps){
     },
   };
   useEffect(()=>{
-    setLabels([])
+    setChartLabels([])
     setChartsData([])
     setData({
-      labels,
+      labels: chartLabels,
       datasets: [
         {
           data: chartsData,
-          borderSkipped: false,
           backgroundColor: '#5D5FEF',
           borderRadius: 8,
         },
@@ -100,7 +108,7 @@ export function Chart(props:ChartProps){
     })
   },[])
   useEffect(()=>{
-    setLabels([])
+    setChartLabels([])
     setChartsData([])
     api.get(props.endpointKPI+'?fromDate='+props.fromDate+'&toDate='+props.toDate)
     .then(function (response) {
@@ -121,18 +129,17 @@ export function Chart(props:ChartProps){
     api.get(props.endpointData+'?fromDate='+props.fromDate+'&toDate='+props.toDate)
     .then(function (response) {
       if(props.dataType === DataType.TOTALDONATED){
-        const labels = []
+        const chartLabels = []
         const chartsData = []
         
         response.data.totalDonations.map((donation)=>{
-          labels.push(formatLabelDate(donation.date))
+          chartLabels.push(formatLabelDate(donation.date))
           chartsData.push(donation.totalDonated)
           setData({
-            labels,
+            labels: chartLabels,
             datasets: [
               {
                 data: chartsData,
-                borderSkipped: false,
                 backgroundColor: '#5D5FEF',
                 borderRadius: 8,
               },
@@ -141,17 +148,16 @@ export function Chart(props:ChartProps){
         })
       }
       else if(props.dataType === DataType.PROJECTSCREATED){
-        const labels = []
+        const chartLabels = []
         const chartsData = []
         response.data.result.map((projects)=>{
-          labels.push(formatLabelDate(projects.date))
+          chartLabels.push(formatLabelDate(projects.date))
           chartsData.push(projects.count)
           setData({
-            labels,
+            labels: chartLabels,
             datasets: [
               {
                 data: chartsData,
-                borderSkipped: false,
                 backgroundColor: '#5D5FEF',
                 borderRadius: 8,
               },
