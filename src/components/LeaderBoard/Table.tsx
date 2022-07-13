@@ -5,7 +5,7 @@ import ReactPaginate from 'react-paginate';
 import { formatDollarAmount } from '../../utils/numbers'
 import  { mediaQueries } from "../../utils/size"
 import { useEffect, useState } from "react";
-import { donorsProps, projectsProps } from "./LeaderBoard";
+import api from "../../api/instance"
 
 export enum DataType {
   DONOR ='DONOR',
@@ -14,21 +14,42 @@ export enum DataType {
 
 interface TableProps{
   title: string,
-  data: Array<donorsProps> | Array<projectsProps>,
   headerItems: Array<string>,
   dataType: DataType,
   itemsPerPage: number,
+  endpoint: string
+  fromDate: string
+  toDate: string
 }
 
-export function Table ({ title, data, headerItems, itemsPerPage, dataType } : TableProps){
-
+export function Table ({ title, headerItems, itemsPerPage, dataType, endpoint, fromDate, toDate } : TableProps){
+  const [data, setData] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isError, setIsError] = useState(false)
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
 
   useEffect(() => {
-    if(!data) return
+    api.get(endpoint+'?fromDate='+fromDate+'&toDate='+toDate)
+    .then(function (response) {
+      setIsLoading(false)
+      if(dataType === DataType.DONOR){
+        setData(response.data.leadDonors)
+      }
+      else if(dataType === DataType.PROJECT){
+        setData(response.data.leadingProjects)
+      }
+    })
+    .catch(function (error) {
+      setIsLoading(false)
+      setIsError(true)
+    })
+  }, [fromDate]);
 
+
+  useEffect(() => {
+    if(!data) return
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(data.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(data.length / itemsPerPage));
@@ -38,6 +59,7 @@ export function Table ({ title, data, headerItems, itemsPerPage, dataType } : Ta
     const newOffset = (event.selected * itemsPerPage) % data.length;
     setItemOffset(newOffset);
   };
+
 
   return(
     <div>
@@ -54,55 +76,57 @@ export function Table ({ title, data, headerItems, itemsPerPage, dataType } : Ta
         </Data>
         <HR />
         <Rows>
-          {currentItems && dataType === DataType.DONOR ? currentItems.map((item)=>{
+          {!isError && !isLoading && currentItems && dataType === DataType.DONOR && currentItems.map((item)=>{
             return (
-            <Data key={item.id}>            
+            <Data key={item.donorAddress}>            
                 <TableData>
                   {item.id}
                 </TableData>
-              <Link>
+              <LinkContainer href={`https://blockscout.com/xdai/mainnet/address/${item.donorAddress}`} target="_blank"> 
                 <URL>
-                  {item.adress.slice(0,5)}...{item.adress.slice(-4)}
+                  {item.donorAddress.slice(0,5)}...{item.donorAddress.slice(-4)}
                 </URL>
                 <Icon
                   src={`/images/link.svg`}
                   alt='link'
                 />
-              </Link>
+              </LinkContainer>
                 <TableData>
-                  {item.quantity}
+                  {item.donationsCount}
                 </TableData>
                 <TableData>
-                  {formatDollarAmount(item.value, 2, true)} 
+                  {formatDollarAmount(item.totalDonated, 2, true)} 
                 </TableData>
             </Data>
-          )}) :
+          )})} 
           
-          currentItems && dataType === DataType.PROJECT ? currentItems.map((item)=>{
+          {!isError && !isLoading && currentItems && dataType === DataType.PROJECT && currentItems.map((item)=>{
             return (
-              <Data key={item.id}>            
+              <Data key={item.projectTitle}>            
               <TableData>
                 {item.id}
               </TableData>
-            <Link>
-              <URL>
-                {item.name}
-              </URL>
-              <Icon
-                src={`/images/link.svg`}
-                alt='link'
-              />
-            </Link>
+            <LinkContainer href={`https://giveth.io/project/${item.projectSlug}`} target="_blank">
+                <URL>
+                  {item.projectTitle.trim().split(/\s+/)[0]}
+                </URL>
+                <Icon
+                  src={`/images/link.svg`}
+                  alt='link'
+                />
+            </LinkContainer>
               <TableData>
-                {item.donors}
+                {item.givers}
               </TableData>
               <TableData>
-                {formatDollarAmount(item.raised, 2, true)} 
+                {formatDollarAmount(item.totalDonated, 2, true)} 
               </TableData>
           </Data>
-          )}) : 
-          
-          <h1>loading</h1>}
+          )})}
+          {isError &&                   
+            <ErrorMessage>
+              Data is currently not available
+            </ErrorMessage>}
         </Rows>
         <HR />
         <Pagination>
@@ -167,13 +191,10 @@ const TableData = styled(P)`
   text-align: center;
 `
 
-const Link = styled.div`
+const LinkContainer = styled.a`
   width: 100%;
   display: flex;
   justify-content: center;
-  &:hover{
-    text-decoration: underline;
-  }
 `
 
 const URL = styled(P)`
@@ -181,6 +202,18 @@ const URL = styled(P)`
   font-weight: 400;
   text-align: center;
   color: ${brandColors.cyan[600]};
+  
+  &:hover{
+    text-decoration: underline;
+  }
+`
+
+const ErrorMessage = styled(P)`
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 21px;
+  color: ${brandColors.deep[100]};
+  text-align: center;
 `
 
 const Icon = styled.img`

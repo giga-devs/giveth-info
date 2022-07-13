@@ -1,42 +1,52 @@
 import { useEffect, useState } from "react"
-import { KPI } from "./KPI"
+import { DataType, KPI } from "./KPI"
 
 import styled from "styled-components"
 import { H4 } from "@giveth/ui-design-system" 
 import { mediaQueries } from "../../utils/size"
+import { Date } from "../../pages"
 
-export function OverView(){
-  const [totalDonated, setTotalDonated] = useState(0)
-  const [donorsRegistered, setDonorsRegistered] = useState(0)
-  const [projectsCreated, setProjectsCreated] = useState(0)
-  const [topDonation, setTopDonation] = useState(0)
+interface KPIType{
+  title: string
+  currency: boolean
+  endpoint: string
+  dataType: DataType
+}
 
-  useEffect(() => {
-    fetch('http://localhost:3000/api/total-donated')
-      .then(response => response.json())
-      .then(data => setTotalDonated(data.value))
-
-    fetch('http://localhost:3000/api/donors')
-    .then(response => response.json())
-    .then(data => setDonorsRegistered(data.value))
-
-    fetch('http://localhost:3000/api/projects')
-    .then(response => response.json())
-    .then(data => setProjectsCreated(data.value))
-
-    fetch('http://localhost:3000/api/top-donation')
-    .then(response => response.json())
-    .then(data => setTopDonation(data.value))
-  },[])
-
+export function OverView(props: Date){
+  const KPIS:Array<KPIType> = [
+    {
+      title: 'Total Donated',
+      endpoint: 'donations/total',
+      currency: true,
+      dataType: DataType.TOTALDONATED,
+    },
+    {
+      title: 'Donors Registered',
+      endpoint: 'donations/donors',
+      currency: false,
+      dataType: DataType.DONORREGISTER,
+    },
+    {
+      title: 'Projects Created',
+      endpoint: 'projects/total',
+      currency: false,
+      dataType: DataType.PROJECTSCREATED,
+    },
+    {
+      title: 'Top Donation',
+      endpoint: 'donations',
+      currency: true,
+      dataType: DataType.TOPDONATION,
+    },
+  ]
   return(
     <div>
       <Title weight={700}>Overview</Title>
       <KPIContainer>
-        <KPI title='Total Donated'value={totalDonated} currency={true}/>
-        <KPI title='Donors Registered' value={donorsRegistered} currency={false}/>
-        <KPI title='Projects Created' value={projectsCreated} currency={false}/>
-        <KPI title='Top Donation' value={topDonation} currency={true}/>
+        {KPIS.map((kpi)=>{
+          return <KPI key={kpi.endpoint} title={kpi.title} currency={kpi.currency} endpoint={kpi.endpoint} dataType={kpi.dataType} fromDate={props.fromDate} toDate={props.toDate}/>
+        })}
       </KPIContainer>
     </div>
   )
