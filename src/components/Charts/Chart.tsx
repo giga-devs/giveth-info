@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import { Bar } from 'react-chartjs-2';
 import styled from "styled-components"
 import { H4, brandColors, P } from "@giveth/ui-design-system"
-import { formatDollarAmount } from '../../utils/numbers'
+import { formatDollarAmount, formatLabelDate } from '../../utils/numbers'
 import api from "../../api/instance"
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -15,6 +15,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { DataType } from "../OverView/KPI";
 
 ChartJS.register(
   CategoryScale,
@@ -23,34 +24,35 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-  );
+);
+
+interface ChartProps{
+  endpointKPI: string
+  endpointData: string
+  currency: boolean
+  title: string
+  kpiTitle: string
+  dataType: DataType
+  fromDate: string
+  toDate: string
+}
   
-  export function DonationChart(){
-  const [totalDonated, setTotalDonated] = useState(0)
-  const [currentTotalDonated, setCurrentTotalDonated] = useState(0)
+export function Chart(props:ChartProps){
+  const [value, setValue] = useState(0)
+  const [data, setData] = useState({})
+  const [chartsData, setChartsData] = useState([])
+  const [labels, setLabels] = useState([])
+  const [currentValue, setCurrentValue] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
-  
-  const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
-  
-  const data = {
-    labels,
-    datasets: [
-      {
-        data: [5435, 45354, 35543, 3554, 25354, 3445, 3455],
-        borderSkipped: false,
-        backgroundColor: '#5D5FEF',
-        borderRadius: 8,
-      },
-    ],
-  };
+
   const options = {
     onHover: function(evt, item) { 
       if (item.length>0) {
-        setCurrentTotalDonated(item[0].element.$context.raw);
+        setCurrentValue(item[0].element.$context.raw);
       }
       else {
-        setCurrentTotalDonated(totalDonated)
+        setCurrentValue(value)
       }
    },
     responsive: true,
@@ -82,23 +84,89 @@ ChartJS.register(
       },
     },
   };
-  
-  useEffect(() => {
-    api.get('/total-donated')
+  useEffect(()=>{
+    setLabels([])
+    setChartsData([])
+    setData({
+      labels,
+      datasets: [
+        {
+          data: chartsData,
+          borderSkipped: false,
+          backgroundColor: '#5D5FEF',
+          borderRadius: 8,
+        },
+      ],
+    })
+  },[])
+  useEffect(()=>{
+    setLabels([])
+    setChartsData([])
+    api.get(props.endpointKPI+'?fromDate='+props.fromDate+'&toDate='+props.toDate)
     .then(function (response) {
       setIsLoading(false)
-      setTotalDonated(response.data.value)
-      setCurrentTotalDonated(response.data.value)
+      if(props.dataType === DataType.TOTALDONATED){
+        setValue(response.data.valueUsd)
+        setCurrentValue(response.data.valueUsd)
+      }
+      else if(props.dataType === DataType.PROJECTSCREATED){
+        setValue(response.data.totalProjects)
+        setCurrentValue(response.data.totalProjects)
+      }
     })
     .catch(function (error) {
       setIsLoading(false)
       setIsError(true)
     })
-  },[])
+    api.get(props.endpointData+'?fromDate='+props.fromDate+'&toDate='+props.toDate)
+    .then(function (response) {
+      if(props.dataType === DataType.TOTALDONATED){
+        const labels = []
+        const chartsData = []
+        
+        response.data.totalDonations.map((donation)=>{
+          labels.push(formatLabelDate(donation.date))
+          chartsData.push(donation.totalDonated)
+          setData({
+            labels,
+            datasets: [
+              {
+                data: chartsData,
+                borderSkipped: false,
+                backgroundColor: '#5D5FEF',
+                borderRadius: 8,
+              },
+            ],
+          })
+        })
+      }
+      else if(props.dataType === DataType.PROJECTSCREATED){
+        const labels = []
+        const chartsData = []
+        response.data.result.map((projects)=>{
+          labels.push(formatLabelDate(projects.date))
+          chartsData.push(projects.count)
+          setData({
+            labels,
+            datasets: [
+              {
+                data: chartsData,
+                borderSkipped: false,
+                backgroundColor: '#5D5FEF',
+                borderRadius: 8,
+              },
+            ],
+          })
+        })
+      }
+    })
+  },[props.fromDate])
+
+
 
     return(
       <div>
-        <TitleH1 weight={700}>Donations</TitleH1>
+        <TitleH1 weight={700}>{props.title}</TitleH1>
         <ChartContainer>
           {isLoading && 
             <Skeleton height={300} highlightColor={brandColors.giv[600]} baseColor={brandColors.giv[700]}/>
@@ -114,7 +182,7 @@ ChartJS.register(
             <>
                 <KPICard>
                   <Content>
-                    <TitleKPI>Total Donated</TitleKPI>
+                    <TitleKPI>{props.kpiTitle}</TitleKPI>
                     {isLoading && 
                       <Skeleton height={42} highlightColor={brandColors.giv[600]} baseColor={brandColors.giv[700]}/>
                     }
@@ -123,9 +191,14 @@ ChartJS.register(
                         <Number>-</Number>
                       </Value>
                     }
-                    {!isLoading && !isError  &&
+                    {!isLoading && !isError && props.currency &&
                       <Value>
-                        <Number>{formatDollarAmount(currentTotalDonated, 2, true)}</Number>
+                        <Number>{formatDollarAmount(currentValue, 2, true)}</Number>
+                      </Value>
+                    }
+                    {!isLoading && !isError && !props.currency &&
+                      <Value>
+                        <Number>{currentValue}</Number>
                       </Value>
                     }
                   </Content>

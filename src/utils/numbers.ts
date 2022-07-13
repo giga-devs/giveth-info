@@ -34,3 +34,28 @@ export const formatAmount = (num: number | undefined, digits = 2) => {
     },
   })
 }
+
+export const formatDate = (dateString) => {
+  const Year = dateString.slice(0,4)
+  const Month = dateString.slice(4,6)
+  const Date = dateString.slice(6,8)
+  return `${Month}/${Date}/${Year}`
+}
+
+export const formatLabelDate = (dateString) => {
+  const Year = dateString.slice(0,4)
+  const Month = dateString.slice(5,7)
+  const Date = dateString.slice(8,10)
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+  if (Date){
+    return `${Date}/${Month}`
+  }
+  else {
+    if(Month.slice(0,1)==='0'){
+      return months[Month.slice(-1)-1]
+    }else {
+      return months[Month-1]
+    }
+  }
+}
