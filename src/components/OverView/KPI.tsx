@@ -6,29 +6,49 @@ import api from "../../api/instance"
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
-
-export interface KPIType{
+interface KPIProps{
   title: string
   currency: boolean
   endpoint: string
+  dataType: DataType
+  fromDate: string
+  toDate: string
 }
 
-export function KPI(props: KPIType){
+export enum DataType {
+  TOTALDONATED ='TOTALDONATED',
+  DONORREGISTER = 'DONORREGISTER',
+  PROJECTSCREATED = 'PROJECTSCREATED',
+  TOPDONATION = 'TOPDONATION'
+}
+
+export function KPI(props: KPIProps){
   const [value, setValue] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
 
   useEffect(() => {
-    api.get(props.endpoint)
+    api.get(props.endpoint+'?fromDate='+props.fromDate+'&toDate='+props.toDate)
     .then(function (response) {
       setIsLoading(false)
-      setValue(response.data.value)
+      if(props.dataType === DataType.TOTALDONATED){
+        setValue(response.data.valueUsd)
+      }
+      else if(props.dataType === DataType.PROJECTSCREATED){
+        setValue(response.data.totalProjects)
+      }
+      else if (props.dataType === DataType.DONORREGISTER){
+        setValue(response.data.donorsCount)
+      }
+      else if (props.dataType === DataType.TOPDONATION){
+        setValue(Math.max(...response.data.totalDonations.map(o => o.totalDonated)))
+      }
     })
     .catch(function (error) {
       setIsLoading(false)
       setIsError(true)
     })
-  },[])
+  },[props.fromDate])
 
   return(
     <KPICard>

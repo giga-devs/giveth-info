@@ -1,40 +1,51 @@
 import { useEffect, useState } from "react"
-import { KPI, KPIType } from "./KPI"
+import { DataType, KPI } from "./KPI"
 
 import styled from "styled-components"
 import { H4 } from "@giveth/ui-design-system" 
 import { mediaQueries } from "../../utils/size"
+import { Date } from "../../pages"
 
-export function OverView(){
+interface KPIType{
+  title: string
+  currency: boolean
+  endpoint: string
+  dataType: DataType
+}
+
+export function OverView(props: Date){
   const KPIS:Array<KPIType> = [
     {
       title: 'Total Donated',
-      endpoint: 'total-donated',
-      currency: true
+      endpoint: 'donations/total',
+      currency: true,
+      dataType: DataType.TOTALDONATED,
     },
     {
       title: 'Donors Registered',
-      endpoint: 'donors',
-      currency: false
+      endpoint: 'donations/donors',
+      currency: false,
+      dataType: DataType.DONORREGISTER,
     },
     {
       title: 'Projects Created',
-      endpoint: 'projects',
-      currency: false
+      endpoint: 'projects/total',
+      currency: false,
+      dataType: DataType.PROJECTSCREATED,
     },
     {
       title: 'Top Donation',
-      endpoint: 'top-donation',
-      currency: true
+      endpoint: 'donations',
+      currency: true,
+      dataType: DataType.TOPDONATION,
     },
   ]
-  
   return(
     <div>
       <Title weight={700}>Overview</Title>
       <KPIContainer>
         {KPIS.map((kpi)=>{
-          return <KPI key={kpi.endpoint} title={kpi.title} currency={kpi.currency} endpoint={kpi.endpoint}/>
+          return <KPI key={kpi.endpoint} title={kpi.title} currency={kpi.currency} endpoint={kpi.endpoint} dataType={kpi.dataType} fromDate={props.fromDate} toDate={props.toDate}/>
         })}
       </KPIContainer>
     </div>

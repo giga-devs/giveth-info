@@ -4,35 +4,27 @@ import styled from "styled-components"
 import { H4 } from "@giveth/ui-design-system" 
 import  { mediaQueries } from "../../utils/size"
 import { DataType, Table } from "./Table"
+import { removeProps } from "react-select/dist/declarations/src/utils"
 
-export interface donorsProps {
-  id: number,
-  adress: string,
-  quantity: number,
-  value: number
+interface Date {
+  fromDate: string
+  toDate: string
 }
 
-export interface projectsProps {
-  id: number,
-  name: string,
-  donors: number,
-  raised: number
-}
-
-export function LeaderBoard(){
+export function LeaderBoard(props:Date){
 
   const Tables = [
     {
       title: "Top Donors by Total Donated",
       headerItems: ['#','Donor Address','# Donations','Total Donated'],
       dataType: DataType.DONOR,
-      endpoint: 'top-donations',
+      endpoint: 'leaders/donors',
     },
     {
       title: "Top Projects by Total Donated", 
       headerItems: ['#','Project Name','# Donors','Total Raised'],
       dataType: DataType.PROJECT,
-      endpoint: 'top-projects',
+      endpoint: 'leaders/projects',
     }
   ]
 
@@ -49,6 +41,8 @@ export function LeaderBoard(){
               dataType={table.dataType}
               itemsPerPage={6}
               endpoint={table.endpoint}
+              fromDate={props.fromDate}
+              toDate={props.toDate}
             />
           )
         })}
