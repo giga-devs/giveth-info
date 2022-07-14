@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react"
+import { Dispatch } from "react"
 import { DataType, KPI } from "./KPI"
 
 import styled from "styled-components"
 import { H4 } from "@giveth/ui-design-system" 
 import { mediaQueries } from "../../utils/size"
-import { Date } from "../../pages"
+import { RoundsFilter } from "../RoundsFilter"
 
 interface KPIType{
   title: string
@@ -13,7 +13,14 @@ interface KPIType{
   dataType: DataType
 }
 
-export function OverView(props: Date){
+export interface RoundFilterType {
+  fromDate: string
+  setFromDate: Dispatch<string>
+  toDate: string
+  setToDate: Dispatch<string>
+}
+
+export function OverView(props: RoundFilterType){
   const KPIS:Array<KPIType> = [
     {
       title: 'Total Donated',
@@ -42,7 +49,12 @@ export function OverView(props: Date){
   ]
   return(
     <div>
-      <Title weight={700}>Overview</Title>
+      <Header>
+        <Title weight={700}>Overview</Title>
+        <FilterContainer>
+          <RoundsFilter fromDate={props.fromDate} setFromDate={props.setFromDate} toDate={props.toDate} setToDate={props.setToDate}/>
+        </FilterContainer>
+      </Header>
       <KPIContainer>
         {KPIS.map((kpi)=>{
           return <KPI key={kpi.endpoint} title={kpi.title} currency={kpi.currency} endpoint={kpi.endpoint} dataType={kpi.dataType} fromDate={props.fromDate} toDate={props.toDate}/>
@@ -52,7 +64,38 @@ export function OverView(props: Date){
   )
 }
 
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  ${mediaQueries.mobileS} {
+    align-items: start;
+		flex-direction: column-reverse;
+	}
+  ${mediaQueries.tablet} {
+		flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+	}
+`
+
+const FilterContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  ${mediaQueries.mobileS} {
+    justify-content: center;
+    margin-bottom: 20px;
+	}
+  ${mediaQueries.tablet} {
+		justify-content: end;
+    margin-bottom:0;
+	}
+`
+
 const KPIContainer = styled.div`
+  margin-top: 30px;
   display: grid;
   width: 100%;
   justify-content: space-between;
@@ -71,5 +114,5 @@ const KPIContainer = styled.div`
 `
 
 const Title = styled(H4)`
-  margin-bottom: 30px;
+width: 100%;
 `

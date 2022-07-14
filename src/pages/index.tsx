@@ -27,8 +27,7 @@ export default function Home() {
       <Container>
         <Header />
         <Content>
-          <RoundsFilter fromDate={fromDate} setFromDate={setFromDate} toDate={toDate} setToDate={setToDate}/>
-          <OverView fromDate={fromDate} toDate={toDate}/>
+          <OverView fromDate={fromDate} toDate={toDate} setFromDate={setFromDate} setToDate={setToDate}/>
           <Charts fromDate={fromDate} toDate={toDate}/>
           <LeaderBoard fromDate={fromDate} toDate={toDate}/>
         </Content>
