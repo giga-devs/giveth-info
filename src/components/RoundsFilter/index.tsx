@@ -25,7 +25,6 @@ export function RoundsFilter(props:RoundFilterType){
   const [value, setValue] = useState([])
   const [labels,setLabels] = useState<LabelType[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [isError, setIsError] = useState(false)
 
   useEffect(() => {
     api.get('/rounds')
@@ -35,7 +34,6 @@ export function RoundsFilter(props:RoundFilterType){
     })
     .catch(function (error) {
         setIsLoading(false)
-        setIsError(true)
     })
   },[])
   
@@ -69,7 +67,7 @@ export function RoundsFilter(props:RoundFilterType){
         {isLoading && 
           <Skeleton height={38} width={344} borderRadius={8} highlightColor={brandColors.giv[600]} baseColor={brandColors.giv[700]}/>
         }
-        {!isLoading && !isError &&
+        {!isLoading &&
           <SelectContainer>
             <Select 
               options={labels} 
