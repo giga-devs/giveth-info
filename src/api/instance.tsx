@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'http://52.200.211.218/api/'
+  baseURL: 'https://www.apigivethinfo.website/api/'
 });
 
 export default api;
