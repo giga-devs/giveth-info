@@ -46,13 +46,12 @@ const Container = styled.div`
 const Content = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 160px;
   row-gap: 30px;
   padding-top: 32px;
   padding-bottom: 72px;
 
   
-  ${mediaQueries.mobileL} {
+  ${mediaQueries.mobileS} {
     margin: 0 40px;
   }
 
