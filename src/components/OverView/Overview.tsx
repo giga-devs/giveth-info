@@ -41,7 +41,7 @@ export function OverView(props: RoundFilterType){
       dataType: DataType.PROJECTSCREATED,
     },
     {
-      title: 'Top Donation',
+      title: 'Top Daily Sum of Donations',
       endpoint: 'donations',
       currency: true,
       dataType: DataType.TOPDONATION,
