@@ -46,6 +46,7 @@ export function Chart(props:ChartProps){
         data: [1,2],
         backgroundColor: '#5D5FEF',
         borderRadius: 8,
+        borderSkipped: false,
       },
     ],
   })
@@ -103,6 +104,7 @@ export function Chart(props:ChartProps){
           data: chartsData,
           backgroundColor: '#5D5FEF',
           borderRadius: 8,
+          borderSkipped: false,
         },
       ],
     })
@@ -142,6 +144,7 @@ export function Chart(props:ChartProps){
                 data: chartsData,
                 backgroundColor: '#5D5FEF',
                 borderRadius: 8,
+                borderSkipped: false,
               },
             ],
           })
@@ -161,6 +164,7 @@ export function Chart(props:ChartProps){
                   data: chartsData,
                   backgroundColor: '#5D5FEF',
                   borderRadius: 8,
+                  borderSkipped: false,
                 },
               ],
             })
@@ -173,6 +177,7 @@ export function Chart(props:ChartProps){
                 data: [0],
                 backgroundColor: '#5D5FEF',
                 borderRadius: 8,
+                borderSkipped: false,
               },
             ],
           })
