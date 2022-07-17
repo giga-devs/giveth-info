@@ -6,6 +6,7 @@ export const deviceSize = {
 	laptop: 1024,
 	laptopL: 1280,
 	desktop: 1440,
+	desktopL: 1770,
 };
 
 export const device = {
@@ -16,7 +17,7 @@ export const device = {
 	laptop: `(min-width: ${deviceSize.laptop}px)`,
 	laptopL: `(min-width: ${deviceSize.laptopL}px)`,
 	desktop: `(min-width: ${deviceSize.desktop}px)`,
-	desktopL: `(min-width: ${deviceSize.desktop}px)`,
+	desktopL: `(min-width: ${deviceSize.desktopL}px)`,
 };
 
 export const mediaQueries = {
@@ -27,4 +28,5 @@ export const mediaQueries = {
 	laptop: `@media (min-width: ${deviceSize.laptop}px)`,
 	laptopL: `@media (min-width: ${deviceSize.laptopL}px)`,
 	desktop: `@media (min-width: ${deviceSize.desktop}px)`,
+	desktopL: `@media (min-width: ${deviceSize.desktopL}px)`,
 };

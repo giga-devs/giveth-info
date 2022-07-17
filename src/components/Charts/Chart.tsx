@@ -150,20 +150,33 @@ export function Chart(props:ChartProps){
       else if(props.dataType === DataType.PROJECTSCREATED){
         const chartLabels = []
         const chartsData = []
-        response.data.result.map((projects)=>{
-          chartLabels.push(formatLabelDate(projects.date))
-          chartsData.push(projects.count)
+        if (response.data.result.length>0){
+          response.data.result.map((projects)=>{
+            chartLabels.push(formatLabelDate(projects.date))
+            chartsData.push(projects.count)
+            setData({
+              labels: chartLabels,
+              datasets: [
+                {
+                  data: chartsData,
+                  backgroundColor: '#5D5FEF',
+                  borderRadius: 8,
+                },
+              ],
+            })
+          })
+        } else {
           setData({
-            labels: chartLabels,
+            labels: [' '],
             datasets: [
               {
-                data: chartsData,
+                data: [0],
                 backgroundColor: '#5D5FEF',
                 borderRadius: 8,
               },
             ],
           })
-        })
+        }
       }
     })
   },[props.fromDate])

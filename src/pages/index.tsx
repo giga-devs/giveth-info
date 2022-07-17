@@ -7,7 +7,6 @@ import { OverView } from '../components/OverView/Overview';
 import { Charts } from '../components/Charts/Charts';
 import { LeaderBoard } from '../components/LeaderBoard/LeaderBoard';
 import  { mediaQueries } from "../utils/size"
-import { RoundsFilter } from '../components/RoundsFilter';
 import { useState } from 'react';
 
 export interface Date{

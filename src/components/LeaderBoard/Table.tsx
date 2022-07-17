@@ -103,26 +103,27 @@ export function Table ({ title, headerItems, itemsPerPage, dataType, endpoint, f
           {!isError && !isLoading && currentItems && dataType === DataType.PROJECT && currentItems.map((item)=>{
             return (
               <Data key={item.projectTitle}>            
-              <TableData>
-                {item.id}
-              </TableData>
-            <LinkContainer href={`https://giveth.io/project/${item.projectSlug}`} target="_blank">
-                <URL>
-                  {item.projectTitle.trim().split(/\s+/)[0]}
-                </URL>
-                <Icon
-                  src={`/images/link.svg`}
-                  alt='link'
-                />
-            </LinkContainer>
-              <TableData>
-                {item.givers}
-              </TableData>
-              <TableData>
-                {formatDollarAmount(item.totalDonated, 2, true)} 
-              </TableData>
-          </Data>
-          )})}
+                <TableData>
+                  {item.id}
+                </TableData>
+                <LinkContainer href={`https://giveth.io/project/${item.projectSlug}`} target="_blank">
+                  <URL>
+                    {item.projectTitle}
+                  </URL>
+                  <Icon
+                    src={`/images/link.svg`}
+                    alt='link'
+                  />
+                </LinkContainer>
+                <TableData>
+                  {item.givers}
+                </TableData>
+                <TableData>
+                  {formatDollarAmount(item.totalDonated, 2, true)} 
+                </TableData>
+              </Data>
+            )
+          })}
           {isError &&                   
             <ErrorMessage>
               Data is currently not available
@@ -150,8 +151,16 @@ export function Table ({ title, headerItems, itemsPerPage, dataType, endpoint, f
 }
 
 const TableContainer = styled.div`
-  margin: 0 12px;
-  `
+  ${mediaQueries.mobileS} {
+		margin: 0;
+    font-size: 14px;
+	}
+  
+  ${mediaQueries.mobileL} {
+		margin: 0 12px;
+    font-size: 16px;
+	}
+`
 
 const Title = styled(H5)`
   font-weight: 400;
@@ -162,14 +171,28 @@ const Title = styled(H5)`
 `
 
 const Data = styled.div`
-  display: flex;
+  display: grid;
   justify-content: space-between;
   align-items: center;
+  ${mediaQueries.mobileS} {
+		grid-template-columns: 1fr 3fr 2fr 2fr;
+	}
+  
+  ${mediaQueries.desktopL} {
+		grid-template-columns: 1fr 2fr 1fr 1fr;
+	}
 `
 
 const HR = styled.hr`
   border: 1px solid ${brandColors.giv[500]};
-  margin: 16px 16px;
+  
+  ${mediaQueries.mobileS} {
+		margin: 16px 0;
+	}
+  
+  ${mediaQueries.mobileL} {
+		margin: 16px 16px;
+	}
 `
 
 const Rows = styled.div`
@@ -182,19 +205,42 @@ const TableHeader = styled(P)`
   font-size: 16px;
   font-weight: 500;
   text-align: center;
+
+  ${mediaQueries.mobileS} {
+    font-size: 12px;
+	}
+  
+  ${mediaQueries.mobileL} {
+    font-size: 16px;
+	}
 `
 
 const TableData = styled(P)`
   width: 100%;
-  font-size: 16px;
   font-weight: 400;
   text-align: center;
+  ${mediaQueries.mobileS} {
+    font-size: 14px;
+	}
+  
+  ${mediaQueries.mobileL} {
+    font-size: 16px;
+	}
 `
 
 const LinkContainer = styled.a`
   width: 100%;
   display: flex;
   justify-content: center;
+  align-items: center;
+
+  ${mediaQueries.mobileS} {
+    height: 100%;
+	}
+  
+  ${mediaQueries.laptopL} {
+    height: 48px;
+	}
 `
 
 const URL = styled(P)`
@@ -206,6 +252,15 @@ const URL = styled(P)`
   &:hover{
     text-decoration: underline;
   }
+
+  ${mediaQueries.mobileS} {
+    font-size: 14px;
+	}
+  
+  ${mediaQueries.mobileL} {
+    font-size: 16px;
+	}
+  
 `
 
 const ErrorMessage = styled(P)`
@@ -235,14 +290,20 @@ const MyPaginate = styled(ReactPaginate).attrs({
   flex-direction: row;
   justify-content: space-between;
   list-style-type: none;
-  padding: 0 42px;
 
   ${mediaQueries.mobileS} {
 		width: 100%;
+    padding: 0;
+	}
+  
+  ${mediaQueries.mobileL} {
+		width: 100%;
+    padding: 0 42px;
 	}
 
   ${mediaQueries.desktop} {
 		width: 55%;
+    padding: 0 30px;
 	}
 
   li a {
