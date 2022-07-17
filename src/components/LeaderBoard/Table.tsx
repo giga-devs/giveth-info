@@ -298,12 +298,11 @@ const MyPaginate = styled(ReactPaginate).attrs({
   
   ${mediaQueries.mobileL} {
 		width: 100%;
-    padding: 0 42px;
+    padding: 0 16px;
 	}
 
   ${mediaQueries.desktop} {
 		width: 55%;
-    padding: 0 30px;
 	}
 
   li a {
