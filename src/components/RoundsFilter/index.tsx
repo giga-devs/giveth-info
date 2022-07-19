@@ -112,7 +112,9 @@ const styles = {
     width: 344,
     fontFamily: 'Red Hat Text',
     textAlign: 'center',
-  })
+  }),
+  menuPortal: provided => ({ ...provided, zIndex: 9999 }),
+  menu: provided => ({ ...provided, zIndex: 9999 })
 };
 
 const SelectContainer = styled.div`
