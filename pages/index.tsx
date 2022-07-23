@@ -1,12 +1,12 @@
 import Head from 'next/head';
 import styled from 'styled-components';
 
-import { Footer } from '../components/Footer';
-import { Header } from '../components/Header';
-import { OverView } from '../components/OverView/Overview';
-import { Charts } from '../components/Charts/Charts';
-import { LeaderBoard } from '../components/LeaderBoard/LeaderBoard';
-import  { mediaQueries } from "../utils/size"
+import { Footer } from '../src/components/Footer';
+import { Header } from '../src/components/Header';
+import { OverView } from '../src/components/OverView/Overview';
+import { Charts } from '../src/components/Charts/Charts';
+import { LeaderBoard } from '../src/components/LeaderBoard/LeaderBoard';
+import  { mediaQueries } from "../src/utils/size"
 import { useState } from 'react';
 
 export interface Date{
@@ -21,7 +21,7 @@ export default function Home() {
     <>
       <Head>
         <title>Giveth Info</title>
-        <link rel='shortcut icon' href='/favicon.svg' />
+        <link rel='icon' href='/favicon.svg' />
       </Head>
       <Container>
         <Header />

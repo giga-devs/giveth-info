@@ -1,8 +1,12 @@
+/** @type {import('next').NextConfig} */
+
 const nextConfig = {
-  reactStrictMode: false,
-  target: 'serverless',
+  reactStrictMode: true,
   typescript: {
     ignoreBuildErrors: true,
+  },
+  compiler: {
+    styledComponents: true,
   },
 }
 
