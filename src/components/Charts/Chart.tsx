@@ -134,21 +134,35 @@ export function Chart(props:ChartProps){
         const chartLabels = []
         const chartsData = []
         
-        response.data.totalDonations.map((donation)=>{
-          chartLabels.push(formatLabelDate(donation.date))
-          chartsData.push(donation.totalDonated)
+        if (response.data.totalDonations.length>0){
+          response.data.totalDonations.map((donation)=>{
+            chartLabels.push(formatLabelDate(donation.date))
+            chartsData.push(donation.totalDonated)
+            setData({
+              labels: chartLabels,
+              datasets: [
+                {
+                  data: chartsData,
+                  backgroundColor: '#5D5FEF',
+                  borderRadius: 8,
+                  borderSkipped: false,
+                },
+              ],
+            })
+          })
+        } else {
           setData({
-            labels: chartLabels,
+            labels: [' '],
             datasets: [
               {
-                data: chartsData,
+                data: [0],
                 backgroundColor: '#5D5FEF',
                 borderRadius: 8,
                 borderSkipped: false,
               },
             ],
           })
-        })
+        }
       }
       else if(props.dataType === DataType.PROJECTSCREATED){
         const chartLabels = []
