@@ -1,9 +1,7 @@
-import { Dispatch } from "react"
-import { DataType, KPI } from "./KPI"
-
+import { mediaQueries } from "../../utils/size"
 import styled from "styled-components"
 import { H4 } from "@giveth/ui-design-system" 
-import { mediaQueries } from "../../utils/size"
+import { DataType, KPI } from "./KPI"
 import { RoundsFilter } from "../RoundsFilter"
 
 interface KPIType{
@@ -13,14 +11,7 @@ interface KPIType{
   dataType: DataType
 }
 
-export interface RoundFilterType {
-  fromDate: string
-  setFromDate: Dispatch<string>
-  toDate: string
-  setToDate: Dispatch<string>
-}
-
-export function OverView(props: RoundFilterType){
+export function OverView(){
   const KPIS:Array<KPIType> = [
     {
       title: 'Total Donated',
@@ -52,12 +43,12 @@ export function OverView(props: RoundFilterType){
       <Header>
         <Title weight={700}>Overview</Title>
         <FilterContainer>
-          <RoundsFilter fromDate={props.fromDate} setFromDate={props.setFromDate} toDate={props.toDate} setToDate={props.setToDate}/>
+          <RoundsFilter/>
         </FilterContainer>
       </Header>
       <KPIContainer>
         {KPIS.map((kpi)=>{
-          return <KPI key={kpi.endpoint} title={kpi.title} currency={kpi.currency} endpoint={kpi.endpoint} dataType={kpi.dataType} fromDate={props.fromDate} toDate={props.toDate}/>
+          return <KPI key={kpi.endpoint} title={kpi.title} currency={kpi.currency} endpoint={kpi.endpoint} dataType={kpi.dataType}/>
         })}
       </KPIContainer>
     </div>

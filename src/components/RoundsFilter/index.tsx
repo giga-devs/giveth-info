@@ -1,17 +1,12 @@
+import { useEffect, useState } from "react"
+import api from "../../api/instance"
+import useRoundContext from "../../RoundContext"
+import { formatDate } from '../../utils/numbers'
 import styled from "styled-components"
 import { brandColors } from "@giveth/ui-design-system"
 import Select from 'react-select'
-import { Dispatch, useEffect, useState } from "react"
-import api from "../../api/instance"
 import Skeleton from "react-loading-skeleton"
-import { formatDate } from '../../utils/numbers'
 
-export interface RoundFilterType {
-  fromDate: string
-  setFromDate: Dispatch<string>
-  toDate: string
-  setToDate: Dispatch<string>
-}
 
 export interface LabelType {
   value: {
@@ -21,10 +16,12 @@ export interface LabelType {
   label: string
 }
 
-export function RoundsFilter(props:RoundFilterType){
+export function RoundsFilter(){
   const [value, setValue] = useState([])
   const [labels,setLabels] = useState<LabelType[]>([])
   const [isLoading, setIsLoading] = useState(true)
+
+  const { setRound } = useRoundContext()
 
   useEffect(() => {
     api.get('/rounds')
@@ -48,17 +45,21 @@ export function RoundsFilter(props:RoundFilterType){
         fromDate:item.fromDate, 
         toDate: item.toDate
       },
-      label: `#${item.round} ${formatDate(item.fromDate)} - ${formatDate(item.toDate)}`,
+      label: `Round ${item.round} | ${formatDate(item.fromDate)} - ${formatDate(item.toDate)}`,
     }
     setLabels(labels => [...labels,label])
   }
   function handleRound(round){
     if(round===null){
-      props.setFromDate('')
-      props.setToDate('')
-    } else{
-      props.setFromDate(round.value.fromDate)
-      props.setToDate(round.value.toDate)
+      setRound({
+        fromDate: '',
+        toDate:'',
+      })
+    } else {
+      setRound({
+        fromDate: round.value.fromDate,
+        toDate: round.value.toDate,
+      })
     }
   }
 
@@ -109,7 +110,7 @@ const styles = {
   }),
   container: provided => ({
     ...provided,
-    width: 344,
+    width: 350,
     fontFamily: 'Red Hat Text',
     textAlign: 'center',
   }),

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react"
+import useRoundContext from "../../RoundContext";
+import api from "../../api/instance"
+import { formatDollarAmount, formatLabelDate } from '../../utils/numbers'
+import { DataType } from "../OverView/KPI";
 import { Bar } from 'react-chartjs-2';
+
 import styled from "styled-components"
 import { H4, brandColors, P } from "@giveth/ui-design-system"
-import { formatDollarAmount, formatLabelDate } from '../../utils/numbers'
-import api from "../../api/instance"
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import {
@@ -15,7 +18,6 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { DataType } from "../OverView/KPI";
 
 ChartJS.register(
   CategoryScale,
@@ -33,8 +35,6 @@ interface ChartProps{
   title: string
   kpiTitle: string
   dataType: DataType
-  fromDate: string
-  toDate: string
 }
   
 export function Chart(props:ChartProps){
@@ -55,6 +55,7 @@ export function Chart(props:ChartProps){
   const [currentValue, setCurrentValue] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
+  const { round } = useRoundContext();
 
   const options = {
     onHover: function(evt, item) { 
@@ -112,7 +113,7 @@ export function Chart(props:ChartProps){
   useEffect(()=>{
     setChartLabels([])
     setChartsData([])
-    api.get(props.endpointKPI+'?fromDate='+props.fromDate+'&toDate='+props.toDate)
+    api.get(props.endpointKPI+'?fromDate='+round.fromDate+'&toDate='+round.toDate)
     .then(function (response) {
       setIsLoading(false)
       if(props.dataType === DataType.TOTALDONATED){
@@ -128,27 +129,41 @@ export function Chart(props:ChartProps){
       setIsLoading(false)
       setIsError(true)
     })
-    api.get(props.endpointData+'?fromDate='+props.fromDate+'&toDate='+props.toDate)
+    api.get(props.endpointData+'?fromDate='+round.fromDate+'&toDate='+round.toDate)
     .then(function (response) {
       if(props.dataType === DataType.TOTALDONATED){
         const chartLabels = []
         const chartsData = []
         
-        response.data.totalDonations.map((donation)=>{
-          chartLabels.push(formatLabelDate(donation.date))
-          chartsData.push(donation.totalDonated)
+        if (response.data.totalDonations.length>0){
+          response.data.totalDonations.map((donation)=>{
+            chartLabels.push(formatLabelDate(donation.date))
+            chartsData.push(donation.totalDonated)
+            setData({
+              labels: chartLabels,
+              datasets: [
+                {
+                  data: chartsData,
+                  backgroundColor: '#5D5FEF',
+                  borderRadius: 8,
+                  borderSkipped: false,
+                },
+              ],
+            })
+          })
+        } else {
           setData({
-            labels: chartLabels,
+            labels: [' '],
             datasets: [
               {
-                data: chartsData,
+                data: [0],
                 backgroundColor: '#5D5FEF',
                 borderRadius: 8,
                 borderSkipped: false,
               },
             ],
           })
-        })
+        }
       }
       else if(props.dataType === DataType.PROJECTSCREATED){
         const chartLabels = []
@@ -184,9 +199,7 @@ export function Chart(props:ChartProps){
         }
       }
     })
-  },[props.fromDate])
-
-
+  },[round])
 
     return(
       <div>

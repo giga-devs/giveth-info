@@ -1,8 +1,9 @@
-import { brandColors, P } from "@giveth/ui-design-system";
-import styled from "styled-components";
-import { formatDollarAmount } from '../../utils/numbers'
 import { useEffect, useState } from "react"
 import api from "../../api/instance"
+import useRoundContext from "../../RoundContext";
+import { formatDollarAmount } from '../../utils/numbers'
+import styled from "styled-components";
+import { brandColors, P } from "@giveth/ui-design-system";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
@@ -11,8 +12,6 @@ interface KPIProps{
   currency: boolean
   endpoint: string
   dataType: DataType
-  fromDate: string
-  toDate: string
 }
 
 export enum DataType {
@@ -26,9 +25,10 @@ export function KPI(props: KPIProps){
   const [value, setValue] = useState(0)
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
+  const { round } = useRoundContext()
 
   useEffect(() => {
-    api.get(props.endpoint+'?fromDate='+props.fromDate+'&toDate='+props.toDate)
+    api.get(props.endpoint+'?fromDate='+round.fromDate+'&toDate='+round.toDate)
     .then(function (response) {
       setIsLoading(false)
       if(props.dataType === DataType.TOTALDONATED){
@@ -48,7 +48,7 @@ export function KPI(props: KPIProps){
       setIsLoading(false)
       setIsError(true)
     })
-  },[props.fromDate])
+  },[round])
 
   return(
     <KPICard>
