@@ -1,7 +1,6 @@
-import Image from "next/image";
 import styled from "styled-components";
+import Image from "next/image";
 import { brandColors, neutralColors, H5 } from "@giveth/ui-design-system";
-
 
 export function Header() {
   return (

@@ -6,19 +6,12 @@ import { Header } from '../src/components/Header';
 import { OverView } from '../src/components/OverView/Overview';
 import { Charts } from '../src/components/Charts/Charts';
 import { LeaderBoard } from '../src/components/LeaderBoard/LeaderBoard';
+import { RoundProvider } from '../src/RoundContext';
 import  { mediaQueries } from "../src/utils/size"
-import { useState } from 'react';
-
-export interface Date{
-  fromDate: string
-  toDate: string
-}
 
 export default function Home() {
-  const [fromDate,setFromDate] = useState('')
-  const [toDate,setToDate] = useState('')
   return (
-    <>
+    <RoundProvider>
       <Head>
         <title>Giveth Info</title>
         <link rel='icon' href='/favicon.svg' />
@@ -26,13 +19,13 @@ export default function Home() {
       <Container>
         <Header />
         <Content>
-          <OverView fromDate={fromDate} toDate={toDate} setFromDate={setFromDate} setToDate={setToDate}/>
-          <Charts fromDate={fromDate} toDate={toDate}/>
-          <LeaderBoard fromDate={fromDate} toDate={toDate}/>
+          <OverView/>
+          <Charts/>
+          <LeaderBoard/>
         </Content>
         <Footer />
       </Container>
-    </>
+    </RoundProvider>
   )
 }
 

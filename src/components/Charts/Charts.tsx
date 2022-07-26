@@ -1,10 +1,9 @@
-import styled from "styled-components"
-import { Date } from "../../pages";
 import  { mediaQueries } from "../../utils/size"
 import { DataType } from "../OverView/KPI";
+import styled from "styled-components"
 import { Chart } from "./Chart"
 
-export function Charts(props: Date){
+export function Charts(){
   return (
     <ChartsContainer>
       <Chart 
@@ -13,8 +12,6 @@ export function Charts(props: Date){
         currency={true} 
         title="Donations" 
         kpiTitle="Total Donated" 
-        fromDate={props.fromDate} 
-        toDate={props.toDate}
         dataType={DataType.TOTALDONATED}
       />
       <Chart 
@@ -23,8 +20,6 @@ export function Charts(props: Date){
         currency={false} 
         title="Projects" 
         kpiTitle="Projects Created" 
-        fromDate={props.fromDate} 
-        toDate={props.toDate}
         dataType={DataType.PROJECTSCREATED}
       />
     </ChartsContainer>

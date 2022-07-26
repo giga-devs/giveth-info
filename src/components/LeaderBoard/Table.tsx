@@ -1,11 +1,12 @@
+import { useEffect, useState } from "react";
+import api from "../../api/instance"
+import useRoundContext from "../../RoundContext";
+import { formatDollarAmount } from '../../utils/numbers'
 import styled from "styled-components"
+import { mediaQueries } from "../../utils/size"
 import { brandColors, H5, P } from "@giveth/ui-design-system";
 import ReactPaginate from 'react-paginate';
 
-import { formatDollarAmount } from '../../utils/numbers'
-import  { mediaQueries } from "../../utils/size"
-import { useEffect, useState } from "react";
-import api from "../../api/instance"
 
 export enum DataType {
   DONOR ='DONOR',
@@ -18,20 +19,19 @@ interface TableProps{
   dataType: DataType,
   itemsPerPage: number,
   endpoint: string
-  fromDate: string
-  toDate: string
 }
 
-export function Table ({ title, headerItems, itemsPerPage, dataType, endpoint, fromDate, toDate } : TableProps){
+export function Table ({ title, headerItems, itemsPerPage, dataType, endpoint } : TableProps){
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
   const [currentItems, setCurrentItems] = useState(null);
   const [pageCount, setPageCount] = useState(0);
   const [itemOffset, setItemOffset] = useState(0);
+  const { round } = useRoundContext()
 
   useEffect(() => {
-    api.get(endpoint+'?fromDate='+fromDate+'&toDate='+toDate)
+    api.get(endpoint+'?fromDate='+round.fromDate+'&toDate='+round.toDate)
     .then(function (response) {
       setIsLoading(false)
       if(dataType === DataType.DONOR){
@@ -45,7 +45,7 @@ export function Table ({ title, headerItems, itemsPerPage, dataType, endpoint, f
       setIsLoading(false)
       setIsError(true)
     })
-  }, [fromDate]);
+  }, [round]);
 
 
   useEffect(() => {

@@ -1,18 +1,9 @@
-import { useEffect, useState } from "react"
-
+import  { mediaQueries } from "../../utils/size"
 import styled from "styled-components"
 import { H4 } from "@giveth/ui-design-system" 
-import  { mediaQueries } from "../../utils/size"
 import { DataType, Table } from "./Table"
-import { removeProps } from "react-select/dist/declarations/src/utils"
 
-interface Date {
-  fromDate: string
-  toDate: string
-}
-
-export function LeaderBoard(props:Date){
-
+export function LeaderBoard(){
   const Tables = [
     {
       title: "Top Donors by Total Donated",
@@ -41,8 +32,6 @@ export function LeaderBoard(props:Date){
               dataType={table.dataType}
               itemsPerPage={6}
               endpoint={table.endpoint}
-              fromDate={props.fromDate}
-              toDate={props.toDate}
             />
           )
         })}
