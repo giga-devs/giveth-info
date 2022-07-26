@@ -1,7 +1,11 @@
 import numbro from 'numbro'
 
 // using a currency library here in case we want to add more in future
-export const formatDollarAmount = (num: number | undefined, digits = 2, round = true) => {
+export const formatDollarAmount = (
+  num: number | undefined,
+  digits = 2,
+  round = true
+) => {
   if (num === 0) return '$0.00'
   if (!num) return '-'
   if (num < 0.001 && digits <= 3) {
@@ -36,36 +40,60 @@ export const formatAmount = (num: number | undefined, digits = 2) => {
 }
 
 export const formatDate = (dateString) => {
-  const year = dateString.slice(0,4)
-  var month = dateString.slice(4,6)
-  var day = dateString.slice(6,8)
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-  
-  if(month.slice(0,1)==='0'){
+  const year = dateString.slice(0, 4)
+  let month = dateString.slice(4, 6)
+  let day = dateString.slice(6, 8)
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]
+
+  if (month.slice(0, 1) === '0') {
     month = month.slice(-1)
   }
-  if(day.slice(0,1)==='0'){
+  if (day.slice(0, 1) === '0') {
     day = day.slice(-1)
   }
-  return `${months[month-1]} ${day}, ${year}`
+  return `${months[month - 1]} ${day}, ${year}`
 }
 
 export const formatLabelDate = (dateString) => {
-  var month = dateString.slice(5,7)
-  var day = dateString.slice(8,10)
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-  
-  if(month.slice(0,1)==='0'){
+  let month = dateString.slice(5, 7)
+  let day = dateString.slice(8, 10)
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ]
+
+  if (month.slice(0, 1) === '0') {
     month = month.slice(-1)
   }
-  if(day.slice(0,1)==='0'){
+  if (day.slice(0, 1) === '0') {
     day = day.slice(-1)
   }
 
-  if(day){
+  if (day) {
     return `${month}/${day}`
   }
-  else {
-    return months[month-1]
-  }
+  return months[month - 1]
 }

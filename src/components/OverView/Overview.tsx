@@ -1,18 +1,18 @@
-import { mediaQueries } from "../../utils/size"
-import styled from "styled-components"
-import { H4 } from "@giveth/ui-design-system" 
-import { DataType, KPI } from "./KPI"
-import { RoundsFilter } from "../RoundsFilter"
+import styled from 'styled-components'
+import { H4 } from '@giveth/ui-design-system'
+import { mediaQueries } from '../../utils/size'
+import { DataType, KPI } from './KPI'
+import { RoundsFilter } from '../RoundsFilter'
 
-interface KPIType{
+interface KPIType {
   title: string
   currency: boolean
   endpoint: string
   dataType: DataType
 }
 
-export function OverView(){
-  const KPIS:Array<KPIType> = [
+export function OverView() {
+  const KPIS: Array<KPIType> = [
     {
       title: 'Total Donated',
       endpoint: 'donations/total',
@@ -38,18 +38,24 @@ export function OverView(){
       dataType: DataType.TOPDONATION,
     },
   ]
-  return(
+  return (
     <div>
       <Header>
         <Title weight={700}>Overview</Title>
         <FilterContainer>
-          <RoundsFilter/>
+          <RoundsFilter />
         </FilterContainer>
       </Header>
       <KPIContainer>
-        {KPIS.map((kpi)=>{
-          return <KPI key={kpi.endpoint} title={kpi.title} currency={kpi.currency} endpoint={kpi.endpoint} dataType={kpi.dataType}/>
-        })}
+        {KPIS.map((kpi) => (
+          <KPI
+            key={kpi.endpoint}
+            title={kpi.title}
+            currency={kpi.currency}
+            endpoint={kpi.endpoint}
+            dataType={kpi.dataType}
+          />
+        ))}
       </KPIContainer>
     </div>
   )
@@ -62,13 +68,13 @@ const Header = styled.div`
 
   ${mediaQueries.mobileS} {
     align-items: start;
-		flex-direction: column-reverse;
-	}
+    flex-direction: column-reverse;
+  }
   ${mediaQueries.tablet} {
-		flex-direction: row;
+    flex-direction: row;
     align-items: center;
     justify-content: space-between;
-	}
+  }
 `
 
 const FilterContainer = styled.div`
@@ -78,11 +84,11 @@ const FilterContainer = styled.div`
   ${mediaQueries.mobileS} {
     justify-content: center;
     margin-bottom: 20px;
-	}
+  }
   ${mediaQueries.tablet} {
-		justify-content: end;
-    margin-bottom:0;
-	}
+    justify-content: end;
+    margin-bottom: 0;
+  }
 `
 
 const KPIContainer = styled.div`
@@ -92,18 +98,18 @@ const KPIContainer = styled.div`
   justify-content: space-between;
   gap: 50px;
 
-	${mediaQueries.mobileS} {
-		grid-template-columns: repeat(1, 1fr);
-	}
+  ${mediaQueries.mobileS} {
+    grid-template-columns: repeat(1, 1fr);
+  }
 
-	${mediaQueries.laptop} {
-		grid-template-columns: repeat(2, 1fr);
-	}
-	${mediaQueries.laptopL} {
-		grid-template-columns: repeat(4, 1fr);
-	}
+  ${mediaQueries.laptop} {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  ${mediaQueries.laptopL} {
+    grid-template-columns: repeat(4, 1fr);
+  }
 `
 
 const Title = styled(H4)`
-width: 100%;
+  width: 100%;
 `

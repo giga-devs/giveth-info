@@ -1,4 +1,10 @@
-import Document, { DocumentContext, Html, Head, Main, NextScript } from 'next/document'
+import Document, {
+  DocumentContext,
+  Html,
+  Head,
+  Main,
+  NextScript,
+} from 'next/document'
 import { ServerStyleSheet } from 'styled-components'
 
 export default class MyDocument extends Document {
@@ -23,8 +29,8 @@ export default class MyDocument extends Document {
     }
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <Html>
         <Head>
           <meta name="title" content="Giveth Info Dashboard" />

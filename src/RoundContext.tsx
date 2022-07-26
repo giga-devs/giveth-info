@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode, useContext, Dispatch } from "react";
+import { createContext, useState, ReactNode, useContext, Dispatch } from 'react'
 
 export interface RoundType {
   fromDate: string
@@ -6,24 +6,24 @@ export interface RoundType {
 }
 
 interface RoundProviderProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 interface ContextType {
-  round: RoundType,
+  round: RoundType
   setRound: Dispatch<RoundType>
 }
 
-export const RoundContext = createContext<ContextType>({} as ContextType);
+export const RoundContext = createContext<ContextType>({} as ContextType)
 
 export function RoundProvider({ children }: RoundProviderProps) {
   const [round, setRound] = useState({
     fromDate: '',
-    toDate:''
+    toDate: '',
   })
 
   return (
-    <RoundContext.Provider value={{round,setRound}}>
+    <RoundContext.Provider value={{ round, setRound }}>
       {children}
     </RoundContext.Provider>
   )
@@ -31,6 +31,6 @@ export function RoundProvider({ children }: RoundProviderProps) {
 
 export default function useRoundContext() {
   const context = useContext(RoundContext)
-  
+
   return context
 }

@@ -1,7 +1,7 @@
 import type { AppProps } from 'next/app'
 import { ThemeProvider, DefaultTheme } from 'styled-components'
+import { brandColors } from '@giveth/ui-design-system'
 import GlobalStyle from '../src/styles/globalstyles'
-import { brandColors } from "@giveth/ui-design-system"
 import '../src/styles/global.css'
 
 const theme: DefaultTheme = {
@@ -13,11 +13,9 @@ const theme: DefaultTheme = {
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Component {...pageProps} />
-      </ThemeProvider>
-    </>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <Component {...pageProps} />
+    </ThemeProvider>
   )
 }

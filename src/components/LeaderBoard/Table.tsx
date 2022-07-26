@@ -1,133 +1,127 @@
-import { useEffect, useState } from "react";
-import api from "../../api/instance"
-import useRoundContext from "../../RoundContext";
+import { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { brandColors, H5, P } from '@giveth/ui-design-system'
+import ReactPaginate from 'react-paginate'
+import api from '../../api/instance'
+import useRoundContext from '../../RoundContext'
 import { formatDollarAmount } from '../../utils/numbers'
-import styled from "styled-components"
-import { mediaQueries } from "../../utils/size"
-import { brandColors, H5, P } from "@giveth/ui-design-system";
-import ReactPaginate from 'react-paginate';
-
+import { mediaQueries } from '../../utils/size'
 
 export enum DataType {
-  DONOR ='DONOR',
-  PROJECT = 'PROJECT'
+  DONOR = 'DONOR',
+  PROJECT = 'PROJECT',
 }
 
-interface TableProps{
-  title: string,
-  headerItems: Array<string>,
-  dataType: DataType,
-  itemsPerPage: number,
+interface TableProps {
+  title: string
+  headerItems: Array<string>
+  dataType: DataType
+  itemsPerPage: number
   endpoint: string
 }
 
-export function Table ({ title, headerItems, itemsPerPage, dataType, endpoint } : TableProps){
+export function Table({
+  title,
+  headerItems,
+  itemsPerPage,
+  dataType,
+  endpoint,
+}: TableProps) {
   const [data, setData] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isError, setIsError] = useState(false)
-  const [currentItems, setCurrentItems] = useState(null);
-  const [pageCount, setPageCount] = useState(0);
-  const [itemOffset, setItemOffset] = useState(0);
+  const [currentItems, setCurrentItems] = useState(null)
+  const [pageCount, setPageCount] = useState(0)
+  const [itemOffset, setItemOffset] = useState(0)
   const { round } = useRoundContext()
 
   useEffect(() => {
-    api.get(endpoint+'?fromDate='+round.fromDate+'&toDate='+round.toDate)
-    .then(function (response) {
-      setIsLoading(false)
-      if(dataType === DataType.DONOR){
-        setData(response.data.leadDonors)
-      }
-      else if(dataType === DataType.PROJECT){
-        setData(response.data.leadingProjects)
-      }
-    })
-    .catch(function (error) {
-      setIsLoading(false)
-      setIsError(true)
-    })
-  }, [round]);
-
+    api
+      .get(`${endpoint}?fromDate=${round.fromDate}&toDate=${round.toDate}`)
+      .then((response) => {
+        setIsLoading(false)
+        if (dataType === DataType.DONOR) {
+          setData(response.data.leadDonors)
+        } else if (dataType === DataType.PROJECT) {
+          setData(response.data.leadingProjects)
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false)
+        setIsError(true)
+      })
+  }, [round])
 
   useEffect(() => {
-    if(!data) return
-    const endOffset = itemOffset + itemsPerPage;
-    setCurrentItems(data.slice(itemOffset, endOffset));
-    setPageCount(Math.ceil(data.length / itemsPerPage));
-  }, [itemOffset, itemsPerPage, data]);
+    if (!data) return
+    const endOffset = itemOffset + itemsPerPage
+    setCurrentItems(data.slice(itemOffset, endOffset))
+    setPageCount(Math.ceil(data.length / itemsPerPage))
+  }, [itemOffset, itemsPerPage, data])
 
   const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % data.length;
-    setItemOffset(newOffset);
-  };
+    const newOffset = (event.selected * itemsPerPage) % data.length
+    setItemOffset(newOffset)
+  }
 
-
-  return(
+  return (
     <div>
       <Title>{title}</Title>
       <TableContainer>
         <Data>
-          {headerItems.map((header)=>{
-            return(
-              <TableHeader key={header}>
-              {header}
-              </TableHeader>
-            )
-          })}
+          {headerItems.map((header) => (
+            <TableHeader key={header}>{header}</TableHeader>
+          ))}
         </Data>
         <HR />
         <Rows>
-          {!isError && !isLoading && currentItems && dataType === DataType.DONOR && currentItems.map((item)=>{
-            return (
-            <Data key={item.donorAddress}>            
-                <TableData>
-                  {item.id}
-                </TableData>
-              <LinkContainer href={`https://blockscout.com/xdai/mainnet/address/${item.donorAddress}`} target="_blank"> 
-                <URL>
-                  {item.donorAddress.slice(0,5)}...{item.donorAddress.slice(-4)}
-                </URL>
-                <Icon
-                  src={`/images/link.svg`}
-                  alt='link'
-                />
-              </LinkContainer>
-                <TableData>
-                  {item.donationsCount}
-                </TableData>
-                <TableData>
-                  {formatDollarAmount(item.totalDonated, 2, true)} 
-                </TableData>
-            </Data>
-          )})} 
-          
-          {!isError && !isLoading && currentItems && dataType === DataType.PROJECT && currentItems.map((item)=>{
-            return (
-              <Data key={item.projectTitle}>            
-                <TableData>
-                  {item.id}
-                </TableData>
-                <LinkContainer href={`https://giveth.io/project/${item.projectSlug}`} target="_blank">
+          {!isError &&
+            !isLoading &&
+            currentItems &&
+            dataType === DataType.DONOR &&
+            currentItems.map((item) => (
+              <Data key={item.donorAddress}>
+                <TableData>{item.id}</TableData>
+                <LinkContainer
+                  href={`https://blockscout.com/xdai/mainnet/address/${item.donorAddress}`}
+                  target="_blank"
+                >
                   <URL>
-                    {item.projectTitle}
+                    {item.donorAddress.slice(0, 5)}...
+                    {item.donorAddress.slice(-4)}
                   </URL>
-                  <Icon
-                    src={`/images/link.svg`}
-                    alt='link'
-                  />
+                  <Icon src="/images/link.svg" alt="link" />
                 </LinkContainer>
+                <TableData>{item.donationsCount}</TableData>
                 <TableData>
-                  {item.givers}
-                </TableData>
-                <TableData>
-                  {formatDollarAmount(item.totalDonated, 2, true)} 
+                  {formatDollarAmount(item.totalDonated, 2, true)}
                 </TableData>
               </Data>
-            )
-          })}
-          {isError &&                   
-            <ErrorMessage>
-              Data is currently not available
-            </ErrorMessage>}
+            ))}
+
+          {!isError &&
+            !isLoading &&
+            currentItems &&
+            dataType === DataType.PROJECT &&
+            currentItems.map((item) => (
+              <Data key={item.projectTitle}>
+                <TableData>{item.id}</TableData>
+                <LinkContainer
+                  href={`https://giveth.io/project/${item.projectSlug}`}
+                  target="_blank"
+                >
+                  <URL>{item.projectTitle}</URL>
+                  <Icon src="/images/link.svg" alt="link" />
+                </LinkContainer>
+                <TableData>{item.givers}</TableData>
+                <TableData>
+                  {formatDollarAmount(item.totalDonated, 2, true)}
+                </TableData>
+              </Data>
+            ))}
+          {isError && (
+            <ErrorMessage>Data is currently not available</ErrorMessage>
+          )}
         </Rows>
         <HR />
         <Pagination>
@@ -152,14 +146,14 @@ export function Table ({ title, headerItems, itemsPerPage, dataType, endpoint } 
 
 const TableContainer = styled.div`
   ${mediaQueries.mobileS} {
-		margin: 0;
+    margin: 0;
     font-size: 14px;
-	}
-  
+  }
+
   ${mediaQueries.mobileL} {
-		margin: 0 12px;
+    margin: 0 12px;
     font-size: 16px;
-	}
+  }
 `
 
 const Title = styled(H5)`
@@ -175,24 +169,24 @@ const Data = styled.div`
   justify-content: space-between;
   align-items: center;
   ${mediaQueries.mobileS} {
-		grid-template-columns: 1fr 3fr 2fr 2fr;
-	}
-  
+    grid-template-columns: 1fr 3fr 2fr 2fr;
+  }
+
   ${mediaQueries.desktopL} {
-		grid-template-columns: 1fr 2fr 1fr 1fr;
-	}
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+  }
 `
 
 const HR = styled.hr`
   border: 1px solid ${brandColors.giv[500]};
-  
+
   ${mediaQueries.mobileS} {
-		margin: 16px 0;
-	}
-  
+    margin: 16px 0;
+  }
+
   ${mediaQueries.mobileL} {
-		margin: 16px 16px;
-	}
+    margin: 16px 16px;
+  }
 `
 
 const Rows = styled.div`
@@ -208,11 +202,11 @@ const TableHeader = styled(P)`
 
   ${mediaQueries.mobileS} {
     font-size: 12px;
-	}
-  
+  }
+
   ${mediaQueries.mobileL} {
     font-size: 16px;
-	}
+  }
 `
 
 const TableData = styled(P)`
@@ -221,11 +215,11 @@ const TableData = styled(P)`
   text-align: center;
   ${mediaQueries.mobileS} {
     font-size: 14px;
-	}
-  
+  }
+
   ${mediaQueries.mobileL} {
     font-size: 16px;
-	}
+  }
 `
 
 const LinkContainer = styled.a`
@@ -236,11 +230,11 @@ const LinkContainer = styled.a`
 
   ${mediaQueries.mobileS} {
     height: 100%;
-	}
-  
+  }
+
   ${mediaQueries.laptopL} {
     height: 48px;
-	}
+  }
 `
 
 const URL = styled(P)`
@@ -248,19 +242,18 @@ const URL = styled(P)`
   font-weight: 400;
   text-align: center;
   color: ${brandColors.cyan[600]};
-  
-  &:hover{
+
+  &:hover {
     text-decoration: underline;
   }
 
   ${mediaQueries.mobileS} {
     font-size: 14px;
-	}
-  
+  }
+
   ${mediaQueries.mobileL} {
     font-size: 16px;
-	}
-  
+  }
 `
 
 const ErrorMessage = styled(P)`
@@ -273,7 +266,7 @@ const ErrorMessage = styled(P)`
 
 const Icon = styled.img`
   width: 12px;
-  margin-left: 6px
+  margin-left: 6px;
 `
 
 const Pagination = styled.div`
@@ -292,18 +285,18 @@ const MyPaginate = styled(ReactPaginate).attrs({
   list-style-type: none;
 
   ${mediaQueries.mobileS} {
-		width: 100%;
+    width: 100%;
     padding: 0;
-	}
-  
+  }
+
   ${mediaQueries.mobileL} {
-		width: 100%;
+    width: 100%;
     padding: 0 16px;
-	}
+  }
 
   ${mediaQueries.desktop} {
-		width: 55%;
-	}
+    width: 55%;
+  }
 
   li a {
     padding: 0.2rem 0.2rem;
@@ -328,4 +321,4 @@ const MyPaginate = styled(ReactPaginate).attrs({
   li.disabled a {
     cursor: default;
   }
-`;
+`

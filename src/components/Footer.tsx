@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { P, brandColors } from "@giveth/ui-design-system";
+import styled from 'styled-components'
+import { P, brandColors } from '@giveth/ui-design-system'
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -23,11 +23,10 @@ const Container = styled.ul`
 
   li {
     list-style: none;
-      & + li{
-        margin-top:16px;
-      }
+    & + li {
+      margin-top: 16px;
+    }
   }
-
 `
 
 const PStyled = styled(P)`
