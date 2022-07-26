@@ -45,7 +45,7 @@ export function RoundsFilter(){
         fromDate:item.fromDate, 
         toDate: item.toDate
       },
-      label: `#${item.round} ${formatDate(item.fromDate)} - ${formatDate(item.toDate)}`,
+      label: `Round ${item.round} | ${formatDate(item.fromDate)} - ${formatDate(item.toDate)}`,
     }
     setLabels(labels => [...labels,label])
   }
@@ -110,7 +110,7 @@ const styles = {
   }),
   container: provided => ({
     ...provided,
-    width: 344,
+    width: 350,
     fontFamily: 'Red Hat Text',
     textAlign: 'center',
   }),

@@ -36,26 +36,36 @@ export const formatAmount = (num: number | undefined, digits = 2) => {
 }
 
 export const formatDate = (dateString) => {
-  const Year = dateString.slice(0,4)
-  const Month = dateString.slice(4,6)
-  const Date = dateString.slice(6,8)
-  return `${Month}/${Date}/${Year}`
+  const year = dateString.slice(0,4)
+  var month = dateString.slice(4,6)
+  var day = dateString.slice(6,8)
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  
+  if(month.slice(0,1)==='0'){
+    month = month.slice(-1)
+  }
+  if(day.slice(0,1)==='0'){
+    day = day.slice(-1)
+  }
+  return `${months[month-1]} ${day}, ${year}`
 }
 
 export const formatLabelDate = (dateString) => {
-  const Year = dateString.slice(0,4)
-  const Month = dateString.slice(5,7)
-  const Date = dateString.slice(8,10)
+  var month = dateString.slice(5,7)
+  var day = dateString.slice(8,10)
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+  
+  if(month.slice(0,1)==='0'){
+    month = month.slice(-1)
+  }
+  if(day.slice(0,1)==='0'){
+    day = day.slice(-1)
+  }
 
-  if (Date){
-    return `${Date}/${Month}`
+  if(day){
+    return `${month}/${day}`
   }
   else {
-    if(Month.slice(0,1)==='0'){
-      return months[Month.slice(-1)-1]
-    }else {
-      return months[Month-1]
-    }
+    return months[month-1]
   }
 }
