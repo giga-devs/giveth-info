@@ -1,19 +1,5 @@
-import styled from 'styled-components'
-import { P, brandColors } from '@giveth/ui-design-system'
-
-export function Footer() {
-  const currentYear = new Date().getFullYear()
-  return (
-    <Container>
-      <li>
-        <PStyled>Made with 💜 by the Giveth Community</PStyled>
-      </li>
-      <li>
-        <PStyled> {currentYear} - No Rights Reserved</PStyled>
-      </li>
-    </Container>
-  )
-}
+import styled from 'styled-components';
+import { P, brandColors } from '@giveth/ui-design-system';
 
 const Container = styled.ul`
   display: flex;
@@ -27,8 +13,22 @@ const Container = styled.ul`
       margin-top: 16px;
     }
   }
-`
+`;
 
 const PStyled = styled(P)`
   color: ${brandColors.deep[100]};
-`
+`;
+
+export function Footer() {
+  const currentYear = new Date().getFullYear();
+  return (
+    <Container>
+      <li>
+        <PStyled>Made with 💜 by the Giveth Community</PStyled>
+      </li>
+      <li>
+        <PStyled> {currentYear} - No Rights Reserved</PStyled>
+      </li>
+    </Container>
+  );
+}

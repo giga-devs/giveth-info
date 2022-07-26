@@ -1,6 +1,28 @@
-import styled from 'styled-components'
-import Image from 'next/image'
-import { brandColors, neutralColors, H5 } from '@giveth/ui-design-system'
+import styled from 'styled-components';
+import Image from 'next/image';
+import { brandColors, neutralColors, H5 } from '@giveth/ui-design-system';
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: ${brandColors.giv[700]};
+  padding: 25px 40px;
+`;
+
+const Logo = styled.a`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${neutralColors.gray[100]};
+  border-radius: 99px;
+  padding: 8px;
+  width: 64px;
+  height: 64px;
+`;
+
+const Title = styled.div`
+  margin: 0px 40px;
+`;
 
 export function Header() {
   return (
@@ -17,27 +39,5 @@ export function Header() {
         <H5 weight={700}>Giveth Info</H5>
       </Title>
     </Container>
-  )
+  );
 }
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: ${brandColors.giv[700]};
-  padding: 25px 40px;
-`
-
-const Logo = styled.a`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: ${neutralColors.gray[100]};
-  border-radius: 99px;
-  padding: 8px;
-  width: 64px;
-  height: 64px;
-`
-
-const Title = styled.div`
-  margin: 0px 40px;
-`

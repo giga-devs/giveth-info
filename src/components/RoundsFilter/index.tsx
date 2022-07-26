@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
-import api from "../../api/instance";
-import useRoundContext from "../../RoundContext";
-import { formatDate } from "../../utils/numbers";
-import styled from "styled-components";
-import { brandColors } from "@giveth/ui-design-system";
-import Select from "react-select";
-import Skeleton from "react-loading-skeleton";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { brandColors } from '@giveth/ui-design-system';
+import Select from 'react-select';
+import Skeleton from 'react-loading-skeleton';
+import { formatDate } from '../../utils/numbers';
+import useRoundContext from '../../RoundContext';
+import api from '../../api/instance';
 
 export interface LabelType {
   value: {
@@ -14,6 +14,31 @@ export interface LabelType {
   };
   label: string;
 }
+
+const styles = {
+  control: (provided) => ({
+    ...provided,
+    color: '#ffff',
+    border: 0,
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: '#ffff',
+    border: 0,
+  }),
+  container: (provided) => ({
+    ...provided,
+    width: 350,
+    fontFamily: 'Red Hat Text',
+    textAlign: 'center',
+  }),
+  menuPortal: (provided) => ({ ...provided, zIndex: 9999 }),
+  menu: (provided) => ({ ...provided, zIndex: 9999 }),
+};
+
+const SelectContainer = styled.div`
+  display: flex;
+`;
 
 export function RoundsFilter() {
   const [value, setValue] = useState([]);
@@ -24,23 +49,20 @@ export function RoundsFilter() {
 
   useEffect(() => {
     api
-      .get("/rounds")
-      .then(function (response) {
+      .get('/rounds')
+      .then((response) => {
         setValue(response.data.rounds);
         setIsLoading(false);
       })
-      .catch(function (error) {
-        setIsLoading(false);
+      .catch((error) => {
+        if (error) {
+          setIsLoading(false);
+        }
       });
   }, []);
 
-  useEffect(() => {
-    setLabels([]);
-    value.forEach(treatLabel);
-  }, [value]);
-
-  function treatLabel(item, index) {
-    const label = {
+  function treatLabel(item) {
+    const newLabel = {
       value: {
         fromDate: item.fromDate,
         toDate: item.toDate,
@@ -49,13 +71,18 @@ export function RoundsFilter() {
         item.toDate
       )}`,
     };
-    setLabels((labels) => [...labels, label]);
+    setLabels((prevLabels) => [...prevLabels, newLabel]);
   }
+
+  useEffect(() => {
+    setLabels([]);
+    value.forEach(treatLabel);
+  }, [value]);
   function handleRound(round) {
     if (round === null) {
       setRound({
-        fromDate: "",
-        toDate: "",
+        fromDate: '',
+        toDate: '',
       });
     } else {
       setRound({
@@ -84,7 +111,7 @@ export function RoundsFilter() {
             placeholder="Select a round"
             id="long-value-select"
             instanceId="long-value-select"
-            isClearable={true}
+            isClearable
             isSearchable={false}
             styles={styles}
             theme={(theme) => ({
@@ -104,28 +131,3 @@ export function RoundsFilter() {
     </SelectContainer>
   );
 }
-
-const styles = {
-  control: (provided, state) => ({
-    ...provided,
-    color: "#ffff",
-    border: 0,
-  }),
-  singleValue: (provided, state) => ({
-    ...provided,
-    color: "#ffff",
-    border: 0,
-  }),
-  container: (provided) => ({
-    ...provided,
-    width: 350,
-    fontFamily: "Red Hat Text",
-    textAlign: "center",
-  }),
-  menuPortal: (provided) => ({ ...provided, zIndex: 9999 }),
-  menu: (provided) => ({ ...provided, zIndex: 9999 }),
-};
-
-const SelectContainer = styled.div`
-  display: flex;
-`;

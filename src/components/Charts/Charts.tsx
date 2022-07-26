@@ -1,7 +1,28 @@
-import styled from 'styled-components'
-import { mediaQueries } from '../../utils/size'
-import { DataType } from '../OverView/KPI'
-import { Chart } from './Chart'
+import styled from 'styled-components';
+import { mediaQueries } from '@/utils/size';
+import { DataType } from '../OverView/KPI';
+import { Chart } from './Chart';
+
+const ChartsContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  ${mediaQueries.mobileS} {
+    flex-direction: column;
+    gap: 50px;
+    div {
+      width: 100%;
+    }
+  }
+
+  ${mediaQueries.laptopL} {
+    flex-direction: row;
+    div {
+      width: 99%;
+    }
+  }
+`;
 
 export function Charts() {
   return (
@@ -23,26 +44,5 @@ export function Charts() {
         dataType={DataType.PROJECTSCREATED}
       />
     </ChartsContainer>
-  )
+  );
 }
-
-const ChartsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  ${mediaQueries.mobileS} {
-    flex-direction: column;
-    gap: 50px;
-    div {
-      width: 100%;
-    }
-  }
-
-  ${mediaQueries.laptopL} {
-    flex-direction: row;
-    div {
-      width: 99%;
-    }
-  }
-`

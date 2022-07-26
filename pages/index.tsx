@@ -1,39 +1,19 @@
-import Head from 'next/head'
-import styled from 'styled-components'
+import Head from 'next/head';
+import styled from 'styled-components';
 
-import { Footer } from '../src/components/Footer'
-import { Header } from '../src/components/Header'
-import { OverView } from '../src/components/OverView/Overview'
-import { Charts } from '../src/components/Charts/Charts'
-import { LeaderBoard } from '../src/components/LeaderBoard/LeaderBoard'
-import { RoundProvider } from '../src/RoundContext'
-import { mediaQueries } from '../src/utils/size'
-
-export default function Home() {
-  return (
-    <RoundProvider>
-      <Head>
-        <title>Giveth Info</title>
-        <link rel="icon" href="/favicon.svg" />
-      </Head>
-      <Container>
-        <Header />
-        <Content>
-          <OverView />
-          <Charts />
-          <LeaderBoard />
-        </Content>
-        <Footer />
-      </Container>
-    </RoundProvider>
-  )
-}
+import { Footer } from '../src/components/Footer';
+import { Header } from '../src/components/Header';
+import { OverView } from '../src/components/OverView/Overview';
+import { Charts } from '../src/components/Charts/Charts';
+import { LeaderBoard } from '../src/components/LeaderBoard/LeaderBoard';
+import { RoundProvider } from '../src/RoundContext';
+import { mediaQueries } from '../src/utils/size';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-`
+`;
 
 const Content = styled.div`
   display: flex;
@@ -53,4 +33,24 @@ const Content = styled.div`
   ${mediaQueries.desktop} {
     margin: 0 160px;
   }
-`
+`;
+
+export default function Home() {
+  return (
+    <RoundProvider>
+      <Head>
+        <title>Giveth Info</title>
+        <link rel="icon" href="/favicon.svg" />
+      </Head>
+      <Container>
+        <Header />
+        <Content>
+          <OverView />
+          <Charts />
+          <LeaderBoard />
+        </Content>
+        <Footer />
+      </Container>
+    </RoundProvider>
+  );
+}

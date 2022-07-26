@@ -1,13 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import useRoundContext from '../../RoundContext'
-import { formatDollarAmount, formatLabelDate } from '../../utils/numbers'
-import { DataType } from '../OverView/KPI'
-import { Bar } from 'react-chartjs-2'
-
-import styled from 'styled-components'
-import { H4, brandColors, P } from '@giveth/ui-design-system'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import React, { useState, useEffect } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -16,22 +7,103 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js'
-import api from '../../api/instance'
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
+import styled from 'styled-components';
+import { H4, brandColors, P } from '@giveth/ui-design-system';
+import Skeleton from 'react-loading-skeleton';
+import { DataType } from '../OverView/KPI';
+import { formatDollarAmount, formatLabelDate } from '../../utils/numbers';
+import useRoundContext from '../../RoundContext';
+import 'react-loading-skeleton/dist/skeleton.css';
+import api from '../../api/instance';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 interface ChartProps {
-  endpointKPI: string
-  endpointData: string
-  currency: boolean
-  title: string
-  kpiTitle: string
-  dataType: DataType
+  endpointKPI: string;
+  endpointData: string;
+  currency: boolean;
+  title: string;
+  kpiTitle: string;
+  dataType: DataType;
 }
 
-export function Chart(props: ChartProps) {
-  const [value, setValue] = useState(0)
+const TitleH1 = styled(H4)`
+  margin-bottom: 30px;
+`;
+
+const ChartContainer = styled.div`
+  background-color: ${brandColors.giv[700]};
+  border-radius: 8px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+const ErrorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 285px;
+`;
+
+const ErrorMessage = styled(P)`
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 21px;
+  color: ${brandColors.deep[100]};
+  text-align: center;
+`;
+
+const KPICard = styled.div`
+  background-color: ${brandColors.giv[700]};
+  height: 100px;
+  width: 100%;
+  border-radius: 8px;
+`;
+
+const Content = styled.div`
+  padding: 18px 24px;
+`;
+
+const Value = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const TitleKPI = styled(P)`
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  color: ${brandColors.deep[100]};
+`;
+
+const Number = styled(P)`
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 42px;
+`;
+
+export function Chart({
+  endpointKPI,
+  endpointData,
+  currency,
+  title,
+  kpiTitle,
+  dataType,
+}: ChartProps) {
+  const [value, setValue] = useState(0);
   const [data, setData] = useState({
     labels: ['a', 'b'],
     datasets: [
@@ -42,20 +114,20 @@ export function Chart(props: ChartProps) {
         borderSkipped: false,
       },
     ],
-  })
-  const [chartsData, setChartsData] = useState([])
-  const [chartLabels, setChartLabels] = useState([])
-  const [currentValue, setCurrentValue] = useState(0)
-  const [isLoading, setIsLoading] = useState(true)
-  const [isError, setIsError] = useState(false)
-  const { round } = useRoundContext()
+  });
+  const [chartsData, setChartsData] = useState([]);
+  const [chartLabels, setChartLabels] = useState([]);
+  const [currentValue, setCurrentValue] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+  const { round } = useRoundContext();
 
   const options = {
     onHover(evt, item) {
       if (item.length > 0) {
-        setCurrentValue(item[0].element.$context.raw)
+        setCurrentValue(item[0].element.$context.raw);
       } else {
-        setCurrentValue(value)
+        setCurrentValue(value);
       }
     },
     responsive: true,
@@ -86,10 +158,10 @@ export function Chart(props: ChartProps) {
         bottom: 18,
       },
     },
-  }
+  };
   useEffect(() => {
-    setChartLabels([])
-    setChartsData([])
+    setChartLabels([]);
+    setChartsData([]);
     setData({
       labels: chartLabels,
       datasets: [
@@ -100,54 +172,52 @@ export function Chart(props: ChartProps) {
           borderSkipped: false,
         },
       ],
-    })
-  }, [])
+    });
+  }, []);
   useEffect(() => {
-    setChartLabels([])
-    setChartsData([])
+    setChartLabels([]);
+    setChartsData([]);
     api
-      .get(
-        `${props.endpointKPI}?fromDate=${round.fromDate}&toDate=${round.toDate}`
-      )
+      .get(`${endpointKPI}?fromDate=${round.fromDate}&toDate=${round.toDate}`)
       .then((response) => {
-        setIsLoading(false)
-        if (props.dataType === DataType.TOTALDONATED) {
-          setValue(response.data.valueUsd)
-          setCurrentValue(response.data.valueUsd)
-        } else if (props.dataType === DataType.PROJECTSCREATED) {
-          setValue(response.data.totalProjects)
-          setCurrentValue(response.data.totalProjects)
+        setIsLoading(false);
+        if (dataType === DataType.TOTALDONATED) {
+          setValue(response.data.valueUsd);
+          setCurrentValue(response.data.valueUsd);
+        } else if (dataType === DataType.PROJECTSCREATED) {
+          setValue(response.data.totalProjects);
+          setCurrentValue(response.data.totalProjects);
         }
       })
       .catch((error) => {
-        setIsLoading(false)
-        setIsError(true)
-      })
+        if (error) {
+          setIsLoading(false);
+          setIsError(true);
+        }
+      });
     api
-      .get(
-        `${props.endpointData}?fromDate=${round.fromDate}&toDate=${round.toDate}`
-      )
+      .get(`${endpointData}?fromDate=${round.fromDate}&toDate=${round.toDate}`)
       .then((response) => {
-        if (props.dataType === DataType.TOTALDONATED) {
-          const chartLabels = []
-          const chartsData = []
+        if (dataType === DataType.TOTALDONATED) {
+          const chartLabelsDonation = [];
+          const chartsDataDonation = [];
 
           if (response.data.totalDonations.length > 0) {
-            response.data.totalDonations.map((donation) => {
-              chartLabels.push(formatLabelDate(donation.date))
-              chartsData.push(donation.totalDonated)
+            response.data.totalDonations.forEach((donation) => {
+              chartLabelsDonation.push(formatLabelDate(donation.date));
+              chartsDataDonation.push(donation.totalDonated);
               setData({
-                labels: chartLabels,
+                labels: chartLabelsDonation,
                 datasets: [
                   {
-                    data: chartsData,
+                    data: chartsDataDonation,
                     backgroundColor: '#5D5FEF',
                     borderRadius: 8,
                     borderSkipped: false,
                   },
                 ],
-              })
-            })
+              });
+            });
           } else {
             setData({
               labels: [' '],
@@ -159,27 +229,27 @@ export function Chart(props: ChartProps) {
                   borderSkipped: false,
                 },
               ],
-            })
+            });
           }
-        } else if (props.dataType === DataType.PROJECTSCREATED) {
-          const chartLabels = []
-          const chartsData = []
+        } else if (dataType === DataType.PROJECTSCREATED) {
+          const chartLabelsProject = [];
+          const chartsDataProject = [];
           if (response.data.result.length > 0) {
-            response.data.result.map((projects) => {
-              chartLabels.push(formatLabelDate(projects.date))
-              chartsData.push(projects.count)
+            response.data.result.forEach((projects) => {
+              chartLabelsProject.push(formatLabelDate(projects.date));
+              chartsDataProject.push(projects.count);
               setData({
-                labels: chartLabels,
+                labels: chartLabelsProject,
                 datasets: [
                   {
-                    data: chartsData,
+                    data: chartsDataProject,
                     backgroundColor: '#5D5FEF',
                     borderRadius: 8,
                     borderSkipped: false,
                   },
                 ],
-              })
-            })
+              });
+            });
           } else {
             setData({
               labels: [' '],
@@ -191,15 +261,15 @@ export function Chart(props: ChartProps) {
                   borderSkipped: false,
                 },
               ],
-            })
+            });
           }
         }
-      })
-  }, [round])
+      });
+  }, [round]);
 
   return (
     <div>
-      <TitleH1 weight={700}>{props.title}</TitleH1>
+      <TitleH1 weight={700}>{title}</TitleH1>
       <ChartContainer>
         {isLoading && (
           <Skeleton
@@ -217,7 +287,7 @@ export function Chart(props: ChartProps) {
           <>
             <KPICard>
               <Content>
-                <TitleKPI>{props.kpiTitle}</TitleKPI>
+                <TitleKPI>{kpiTitle}</TitleKPI>
                 {isLoading && (
                   <Skeleton
                     height={42}
@@ -230,12 +300,12 @@ export function Chart(props: ChartProps) {
                     <Number>-</Number>
                   </Value>
                 )}
-                {!isLoading && !isError && props.currency && (
+                {!isLoading && !isError && currency && (
                   <Value>
                     <Number>{formatDollarAmount(currentValue, 2, true)}</Number>
                   </Value>
                 )}
-                {!isLoading && !isError && !props.currency && (
+                {!isLoading && !isError && !currency && (
                   <Value>
                     <Number>{currentValue}</Number>
                   </Value>
@@ -247,63 +317,5 @@ export function Chart(props: ChartProps) {
         )}
       </ChartContainer>
     </div>
-  )
+  );
 }
-
-const TitleH1 = styled(H4)`
-  margin-bottom: 30px;
-`
-
-const ChartContainer = styled.div`
-  background-color: ${brandColors.giv[700]};
-  border-radius: 8px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`
-
-const ErrorContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 285px;
-`
-
-const ErrorMessage = styled(P)`
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 21px;
-  color: ${brandColors.deep[100]};
-  text-align: center;
-`
-
-const KPICard = styled.div`
-  background-color: ${brandColors.giv[700]};
-  height: 100px;
-  width: 100%;
-  border-radius: 8px;
-`
-
-const Content = styled.div`
-  padding: 18px 24px;
-`
-
-const Value = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`
-
-const TitleKPI = styled(P)`
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 21px;
-  color: ${brandColors.deep[100]};
-`
-
-const Number = styled(P)`
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 42px;
-`
