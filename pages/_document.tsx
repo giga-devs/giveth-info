@@ -30,7 +30,7 @@ export default class MyDocument extends Document {
           <meta name="title" content="Giveth Info Dashboard" />
           <meta
             name="description"
-            content="Analyze the GIV token performance to understand how to help more for-good projects with zero added fees"
+            content="Analyze Giveth platform to understand how to help more for-good projects with zero added fees"
           />
 
           <meta property="og:type" content="website" />
@@ -38,7 +38,7 @@ export default class MyDocument extends Document {
           <meta property="og:title" content="Giveth Info Dashboard" />
           <meta
             property="og:description"
-            content="Analyze the GIV token performance to understand how to help more for-good projects with zero added fees"
+            content="Analyze Giveth platform to understand how to help more for-good projects with zero added fees"
           />
           <meta
             property="og:image"
@@ -53,7 +53,7 @@ export default class MyDocument extends Document {
           <meta property="twitter:title" content="Giveth Info Dashboard" />
           <meta
             property="twitter:description"
-            content="Analyze the GIV token performance to understand how to help more for-good projects with zero added fees"
+            content="Analyze Giveth platform to understand how to help more for-good projects with zero added fees"
           />
           <meta
             property="twitter:image"
