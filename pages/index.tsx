@@ -1,13 +1,13 @@
 import Head from 'next/head';
 import styled from 'styled-components';
 
-import { Footer } from '../src/components/Footer';
-import { Header } from '../src/components/Header';
-import { OverView } from '../src/components/OverView/Overview';
-import { Charts } from '../src/components/Charts/Charts';
-import { LeaderBoard } from '../src/components/LeaderBoard/LeaderBoard';
-import { RoundProvider } from '../src/RoundContext';
-import { mediaQueries } from '../src/utils/size';
+import { Charts } from '@/components/Charts';
+import { Footer } from '@/components/Footer';
+import { Header } from '@/components/Header';
+import { OverView } from '@/components/OverView';
+import { LeaderBoard } from '@/components/LeaderBoard';
+import { RoundProvider } from '@/RoundContext';
+import { mediaQueries } from '@/utils/size';
 
 const Container = styled.div`
   display: flex;

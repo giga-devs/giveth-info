@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { brandColors } from '@giveth/ui-design-system';
 import Select from 'react-select';
 import Skeleton from 'react-loading-skeleton';
-import { formatDate } from '../../utils/numbers';
-import useRoundContext from '../../RoundContext';
-import api from '../../api/instance';
+import { formatDate } from '@/utils/numbers';
+import useRoundContext from '@/RoundContext';
+import api from '@/api/instance';
+import { SelectContainer, styles } from './styles';
 
 export interface LabelType {
   value: {
@@ -14,31 +14,6 @@ export interface LabelType {
   };
   label: string;
 }
-
-const styles = {
-  control: (provided) => ({
-    ...provided,
-    color: '#ffff',
-    border: 0,
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: '#ffff',
-    border: 0,
-  }),
-  container: (provided) => ({
-    ...provided,
-    width: 350,
-    fontFamily: 'Red Hat Text',
-    textAlign: 'center',
-  }),
-  menuPortal: (provided) => ({ ...provided, zIndex: 9999 }),
-  menu: (provided) => ({ ...provided, zIndex: 9999 }),
-};
-
-const SelectContainer = styled.div`
-  display: flex;
-`;
 
 export function RoundsFilter() {
   const [value, setValue] = useState([]);

@@ -10,14 +10,24 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
-import styled from 'styled-components';
-import { H4, brandColors, P } from '@giveth/ui-design-system';
+import { brandColors } from '@giveth/ui-design-system';
 import Skeleton from 'react-loading-skeleton';
-import { DataType } from '../OverView/KPI';
-import { formatDollarAmount, formatLabelDate } from '../../utils/numbers';
-import useRoundContext from '../../RoundContext';
+import { formatDollarAmount, formatLabelDate } from '@/utils/numbers';
+import useRoundContext from '@/RoundContext';
+import api from '@/api/instance';
+import { DataType } from '../../OverView/KPI';
 import 'react-loading-skeleton/dist/skeleton.css';
-import api from '../../api/instance';
+import {
+  ChartContainer,
+  Content,
+  ErrorContainer,
+  ErrorMessage,
+  KPICard,
+  Number,
+  TitleH1,
+  TitleKPI,
+  Value,
+} from './styles';
 
 ChartJS.register(
   CategoryScale,
@@ -36,64 +46,6 @@ interface ChartProps {
   kpiTitle: string;
   dataType: DataType;
 }
-
-const TitleH1 = styled(H4)`
-  margin-bottom: 30px;
-`;
-
-const ChartContainer = styled.div`
-  background-color: ${brandColors.giv[700]};
-  border-radius: 8px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`;
-
-const ErrorContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 285px;
-`;
-
-const ErrorMessage = styled(P)`
-  font-weight: 400;
-  font-size: 20px;
-  line-height: 21px;
-  color: ${brandColors.deep[100]};
-  text-align: center;
-`;
-
-const KPICard = styled.div`
-  background-color: ${brandColors.giv[700]};
-  height: 100px;
-  width: 100%;
-  border-radius: 8px;
-`;
-
-const Content = styled.div`
-  padding: 18px 24px;
-`;
-
-const Value = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`;
-
-const TitleKPI = styled(P)`
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 21px;
-  color: ${brandColors.deep[100]};
-`;
-
-const Number = styled(P)`
-  font-weight: 700;
-  font-size: 32px;
-  line-height: 42px;
-`;
 
 export function Chart({
   endpointKPI,

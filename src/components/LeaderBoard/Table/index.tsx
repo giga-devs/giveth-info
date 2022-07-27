@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import api from '../../api/instance';
-import useRoundContext from '../../RoundContext';
-import { formatDollarAmount } from '../../utils/numbers';
+import api from '@/api/instance';
+import useRoundContext from '@/RoundContext';
+import { formatDollarAmount } from '@/utils/numbers';
 import {
   Data,
   ErrorMessage,
